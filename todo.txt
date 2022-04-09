@@ -1,0 +1,60 @@
+userRoutes=app.use(require('./routes/auth'));
+app.use('/api',userRoutes) // to prefix api to every routes
+
+
+use validator
+
+
+to add admin from rizwan playlist see video 3 or 4* onwards (to 5 also)
+
+
+video 4 -> admin app create
+
+visit video 6  - for middleware and admin and user middleware & also category* wala .
+
+video 7 - product api
+
+to create sub category in menu see video 6 from 30+ min. && implementaion part of frontend at video 14.
+
+to apply offers and reviews of customer, see from video 7.
+
+video 8 complete ,cart implemented
+
+video 9 -cart finished
+
+video 10,11 -> admin app 
+
+set login req data output as token and user from video 11 (22min) and prev ->Done 
+
+redirect from signin to home. -> Done spelling error
+ video 11 30min
+
+
+
+
+ user and category reducer not working but also try his version of code in category reducer
+ 
+
+ video 12 complete  
+
+
+initaistate spellling chnaged to initstate in authreducer js
+
+for adding sub categpry see video 14 in frntend
+
+
+
+
+26-1-22
+chnages in auth controller and model for confirm password field.
+toastify chnages to manage when login and success successfull
+also chnaged status code in login and logout of both admin and customer
+
+
+27-1-22
+video 3 of rizwan is for jwt verification
+video 4 is use of express validator and validation implemenation
+video 7 to be continued
+
+28-1-22
+product controller small modification
