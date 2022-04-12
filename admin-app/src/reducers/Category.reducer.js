@@ -1,15 +1,15 @@
 import { categoryConstant } from "../actions/Constants";
 
-const initState={
-    categories:[],
-    loading:false,
-    error:null
+const initState = {
+    categories: [],
+    loading: false,
+    error: null
 };
-const showCategories=(categories,category)=>{
-    let newCategories=[];
-    for(let cat of categories){
+const showCategories = (categories, category) => {
+    let newCategories = [];
+    for (let cat of categories) {
         newCategories.push({
-           ...cat
+            ...cat
         })
     }
     newCategories.push({
@@ -18,31 +18,68 @@ const showCategories=(categories,category)=>{
     return newCategories;
 }
 
-const CategoryReducer=(state=initState,action)=>{
-    switch(action.type){
+const CategoryReducer = (state = initState, action) => {
+    switch (action.type) {
         case categoryConstant.GET_ALL_CATEGORIES_SUCCESS:
-            console.log(initState.loading);
-            state={
+            state = {
                 ...state,
-                categories:action.payload.categories
+                categories: action.payload.categories
             }
             break;
         case categoryConstant.ADD_NEW_CATEGORY_REQUEST:
-            state={
+            state = {
                 ...state,
-                loading:true
+                loading: true
             }
             break;
         case categoryConstant.ADD_NEW_CATEGORY_SUCCESS:
-            state={
+            state = {
                 ...state,
-                categories:showCategories(state.categories,action.payload.category),
-                loading:false
+                categories: showCategories(state.categories, action.payload.category),
+                loading: false
 
             }
             break;
         case categoryConstant.ADD_NEW_CATEGORY_FAILURE:
-            state={
+            state = {
+                ...initState
+            }
+            break;
+        case categoryConstant.UPDATE_CATEGORY_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case categoryConstant.UPDATE_CATEGORY_SUCCESS:
+            state = {
+                ...state,
+                // categories: showCategories(state.categories, action.payload.category),
+                loading: false
+
+            }
+            break;
+        case categoryConstant.UPDATE_CATEGORY_FAILURE:
+            state = {
+                ...initState
+            }
+            break;
+        case categoryConstant.DELETE_CATEGORY_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case categoryConstant.DELETE_CATEGORY_SUCCESS:
+            state = {
+                ...state,
+                // categories: showCategories(state.categories, action.payload.category),
+                loading: false
+
+            }
+            break;
+        case categoryConstant.DELETE_CATEGORY_FAILURE:
+            state = {
                 ...initState
             }
             break;

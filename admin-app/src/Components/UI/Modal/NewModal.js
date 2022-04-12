@@ -14,10 +14,11 @@ export default function NewModal(props) {
                 <Button variant="secondary" onClick={props.handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={props.addOperation}>
+                <Button variant="primary" onClick={props.operation}>
                     Save Changes
                 </Button>
             </Modal.Footer>
         </Modal>
     )
 }
+ 

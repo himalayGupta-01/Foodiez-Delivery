@@ -1,7 +1,7 @@
 const express=require('express');
 // const { } = require('../http/controllers/categoryController');
 const { requireSignin, adminMiddleware } = require('../http/middlewares/authMiddleware');
-const { createProduct } = require('../http/controllers/productController');
+const { createProduct, getProductsWithCategories, getProducts, deleteProduct, updateProduct } = require('../http/controllers/productController');
 const router = express.Router();
 const multer = require('multer');
 const nanoid =require('nanoid')
@@ -25,8 +25,10 @@ const upload = multer({storage});
 
 
 router.post('/product/create',requireSignin,adminMiddleware,upload.array('productPicture'),createProduct);
-
-// router.get('/category/getcategory',getCategories);
+router.get("/product/getproduct",getProducts)
+router.post("/product/delete/:id",deleteProduct);
+router.post("/product/update/:id",updateProduct);
+// router.get('/product/getdataset',getProductsWithCategories);
 
 
 

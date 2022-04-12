@@ -37,7 +37,7 @@ const showProducts = (products, product, categories) => {
     }
 
     categories.forEach((cat) => {
-        if (cat._id == product.category) {
+        if (cat._id === product.category) {
             let category = {
                 _id: cat._id,
                 name: cat.name
@@ -77,6 +77,44 @@ export default (state = initialState, action) => {
             }
             break;
         case productConstant.ADD_NEW_PRODUCT_FAILURE:
+            state = {
+                ...initialState
+            }
+            break;
+            case productConstant.UPDATE_PRODUCT_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case productConstant.UPDATE_PRODUCT_SUCCESS:
+            state = {
+                ...state,
+                // categories: showCategories(state.categories, action.payload.category),
+                loading: false
+
+            }
+            break;
+        case productConstant.UPDATE_PRODUCT_FAILURE:
+            state = {
+                ...initState
+            }
+            break;
+        case productConstant.DELETE_PRODUCT_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case productConstant.DELETE_PRODUCT_SUCCESS:
+            state = {
+                ...state,
+                // categories: showCategories(state.categories, action.payload.category),
+                loading: false
+
+            }
+            break;
+        case productConstant.DELETE_PRODUCT_FAILURE:
             state = {
                 ...initState
             }

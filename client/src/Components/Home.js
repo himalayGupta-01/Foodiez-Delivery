@@ -4,29 +4,75 @@ import heroPic from "../images/food4.jpg"
 import heroPic2 from "../images/pizza.png"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import { useDispatch, useSelector } from "react-redux"
+import { getAllCategory, getAllProducts } from "../actions/Action"
+import { generatePublicUrl } from '../urlConfig';
 
 
 
 const Home = () => {
+
+    //done by me
+    const categoryState = useSelector(state => state.category);
+    const productState = useSelector(state => state.product)
+    const dispatch = useDispatch();
+
+    const getProductByCategoryId = (categoryId) => {
+        let prod = [];
+        for (let product of productState.products) {
+            if (product.category === categoryId)
+                prod.push({
+                    ...product
+                })
+        }
+        return prod;
+    }
+
+    const makeMenu = () => {
+        let finalData = []
+        for (let category of categoryState.categories) {
+
+            let products = getProductByCategoryId(category._id)
+            finalData.push({
+                ...category,
+                products: products
+            })
+
+        }
+        return finalData;
+    }
+
+
+    //till here
+
+
     const [menu, setMenu] = useState([]);
-    let url='http://localhost:8000';
-    useEffect(() => {
-        axios.get(url).then(res => {
-            setMenu(res.data)
-        }).catch(err => {
-            console.log(err);
-        })
+    let url = 'http://localhost:8000';
+
+
+    useEffect(async () => {
+        //done by me 
+        dispatch(getAllCategory());
+        dispatch(getAllProducts());
+
+        //till here
+
+        // axios.get(url).then(res => {
+        //     setMenu(res.data)
+        // }).catch(err => {
+        //     console.log(err);
+        // })
     }, [url])
 
-    let cartCounter=document.querySelector('#cartCounter')
+    let cartCounter = document.querySelector('#cartCounter')
 
-    function updateCart(pizza){
-        axios.post('/update-cart',pizza).then(res=>{
-            cartCounter.innerText=res.data.totalQty;
+    function updateCart(pizza) {
+        axios.post('/update-cart', pizza).then(res => {
+            cartCounter.innerText = res.data.totalQty;
         })
     }
 
-    const handleInput=(pizza)=>{
+    const handleInput = (pizza) => {
         updateCart(pizza);
         toast.success("product added", {
             position: "top-center",
@@ -40,11 +86,12 @@ const Home = () => {
     }
 
 
-    let menuSection=document.querySelector('.menu')
+    let menuSection = document.querySelector('.menu')
 
-    const moveToMenu=()=>{
-        menuSection.scrollIntoView({behavior:'smooth'});
+    const moveToMenu = () => {
+        menuSection.scrollIntoView({ behavior: 'smooth' });
     }
+
 
     return (
         <>
@@ -63,29 +110,34 @@ const Home = () => {
 
             <section className="hero py-5">
                 <div className="menu container mx-auto py-8">
-                <h1 className="text-xl font-bold mb-8">All Pizzas</h1>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-12 gap-y-16">
-                    {menu.map(menus=>{
-                    return(<div key={menus._id} className="w-full md:w-64">
-                        <img className="h-40 mb-4 mx-auto" src={heroPic2} alt="" />
-                        <div className="text-center">
-                            <h2 className="mb-4 text-lg">{menus.name}</h2>
-                            <span className="size py-1 px-4 rounded-full uppercase text-xs">{menus.size}</span>
-                            <div className="flex items-center justify-around mt-6">
-                                <span className="font-bold text-lg">₹{menus.price}</span>
-                                <button onClick={() => handleInput(menus)}
-                                    className="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
-                                    <span>+</span>
-                                    <span className="ml-4">Add</span>
-                                </button>
-                                <ToastContainer/>
+                    {makeMenu().map((category) => {
+                        return (<>
+                            <br />
+                            <h1 className="text-xl font-bold mb-8">{category.name}</h1>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-12 gap-y-16">
+                                {category.products.map(product => {
+                                    return (<div key={product._id} className="w-full md:w-64">
+                                        <img className="h-40 mb-4 mx-auto" src={generatePublicUrl(product.productPictures[0].img)} alt="" />
+                                        <div className="text-center">
+                                            <h2 className="mb-4 text-lg">{product.name}</h2>
+                                            {/* <span className="size py-1 px-4 rounded-full uppercase text-xs">{product.description}</span> */}
+                                            <div className="flex items-center justify-around mt-6">
+                                                <span className="font-bold text-lg">₹{product.price}</span>
+                                                <button onClick={() => handleInput(product)}
+                                                    className="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
+                                                    <span>+</span>
+                                                    <span className="ml-4">Add</span>
+                                                </button>
+                                                <ToastContainer />
+                                            </div>
+                                        </div>
+                                    </div>)
+                                })
+                                }
                             </div>
-                        </div>
-                    </div>)
-                    })
-                    }
 
-                </div>
+                        </>)
+                    })}
                 </div>
             </section>
         </>
