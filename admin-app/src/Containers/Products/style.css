@@ -12,6 +12,7 @@
      height: 100px;
      overflow: hidden;
      text-align: center;
+     display: flex;
 }
 
 .productImgContainer img{

@@ -2,6 +2,10 @@ userRoutes=app.use(require('./routes/auth'));
 app.use('/api',userRoutes) // to prefix api to every routes
 
 
+if you want to remove the image from the diskStorage
+https://stackoverflow.com/questions/49099744/nodejs-multer-diskstorage-to-delete-file-after-saving-to-disk
+
+
 use validator
 
 

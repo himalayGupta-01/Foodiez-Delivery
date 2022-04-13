@@ -24,10 +24,10 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 
 
-router.post('/product/create',requireSignin,adminMiddleware,upload.array('productPicture'),createProduct);
+router.post('/product/create',requireSignin,adminMiddleware,upload.single('productPicture'),createProduct);
 router.get("/product/getproduct",getProducts)
 router.post("/product/delete/:id",deleteProduct);
-router.post("/product/update/:id",updateProduct);
+router.post("/product/update/:id",upload.single('productPicture'),updateProduct);
 // router.get('/product/getdataset',getProductsWithCategories);
 
 

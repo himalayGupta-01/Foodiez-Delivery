@@ -13,7 +13,7 @@ const Products = (props) => {
 
     const [show, setShow] = useState(false);
     const [name, setName] = useState("");
-    const [productPictures, setProductPictures] = useState([]);
+    const [productPicture, setProductPicture] = useState("");
     const [price, setPrice] = useState("");
     const [description, setDescription] = useState("");
     const [categoryId, setCategoryId] = useState("");
@@ -71,7 +71,6 @@ const Products = (props) => {
                                             handleShowUpdateProductModal(product);
                                         }}>Update</Button>
                                         <Button variant="outline-danger" onClick={() => {
-                                            // ;
                                             setProductDetails(product);
                                             handleShowDeleteShowModal();
                                         }}>Delete</Button>
@@ -95,20 +94,15 @@ const Products = (props) => {
         setShow(false);
         setName("");
         setCategoryId("");
-        setProductPictures([]);
+        setProductPicture("");
         setPrice("");
         setDescription("");
     };
 
-    //to handle all the product pictures of newly added products
-    const handleProductPictures = (e) => {
-
-        setProductPictures([
-            ...productPictures,
-            e.target.files[0]
-        ]);
-        console.log(productPictures);
-    }
+    // //to handle all the product pictures of newly added products
+    // const handleProductPicture = (e) => {
+    //    setProductPicture(e.target.files[0]);
+    // }
 
     //create list of categories from the category object through store
     const createCategoryList = (categories, options = []) => {
@@ -123,21 +117,13 @@ const Products = (props) => {
 
         const form = new FormData();
         form.append("name", name);
-        for (let pic of productPictures) {
-            form.append("productPicture", pic);
-        }
+        form.append("productPicture", productPicture);
         form.append("price", price);
         form.append("description", description);
         form.append("category", categoryId);
 
-
         // done by videos
-        // dispatch(addProduct(form));
-
-        // done by me to display added product immediately
         dispatch(addProduct(form, category.categories));
-
-
         handleClose();
     }
 
@@ -212,12 +198,12 @@ const Products = (props) => {
                             type="file"
                             // label="Product Picture"
                             placeholder={"Product Picture"}
-                            onChange={handleProductPictures}
+                            onChange={(e) => setProductPicture(e.target.files[0])}
                         />
-                        {
+                        {/* {
                             productPictures.length > 0 ?
                                 productPictures.map((pic, index) => <div key={index}> {pic.name} </div>) : null
-                        }
+                        } */}
                     </Col>
                 </Row>
             </NewModal>
@@ -248,7 +234,8 @@ const Products = (props) => {
                 show={showProductDetailModal}
                 handleClose={handleCloseProductDetailsModal}
                 modelTitle={"Product Details"}
-                size="lg"
+                dontShowSubmitButton={true}
+                // size="lg"
             >
                 <Row>
                     <Col md="6">
@@ -276,13 +263,11 @@ const Products = (props) => {
                 </Row>
                 <Row>
                     <Col>
-                        <label className="key">Product Pictures</label>
+                        <label className="key">Product Picture</label>
                         <div style={{ display: "flex" }}>
-                            {productDetails.productPictures.map(picture =>
-                                <div className="productImgContainer">
-                                    <img src={generatePublicUrl(picture.img)} />
-                                </div>
-                            )}
+                            <div className="productImgContainer">
+                                <img src={generatePublicUrl(productDetails.productPicture)} />
+                            </div>
                         </div>
                     </Col>
                 </Row>
@@ -295,51 +280,36 @@ const Products = (props) => {
         setShowUpdateProductModal(false);
         setName("");
         setCategoryId("");
-        setProductPictures([]);
+        setProductPicture("");
         setPrice("");
         setDescription("");
     }
 
     const handleShowUpdateProductModal = async (product) => {
-        console.log("We get product as ",product);
-        
+
         await setName(product.name);
         await setPrice(product.price);
         await setCategoryId(product.category._id)
         await setDescription(product.description);
-        await setProductPictures([
-            ...product.productPictures
-        ]);       
+        await setProductPicture(product.productPicture);
         setShowUpdateProductModal(true);
 
-        console.log("Values after setting in handleUpdateProduct are ", idToOperate, name, price, productPictures, description, categoryId);
     }
 
-    const updateProductFinal = () => {
-        const data={
-            name:name,
-            price:price,
-            description:description,
-            productPictures:[
-                ...productPictures
-            ],
-            category:categoryId,
-            updatedBy:auth.user._id
+    const updateProductFinal = async () => {
 
-        }        
-        dispatch(updateProduct(data, idToOperate));
+        const form = new FormData();
+        form.append("name", name);
+        form.append("productPicture", productPicture);
+        form.append("price", price);
+        form.append("description", description);
+        form.append("category", categoryId);
+
+        await dispatch(updateProduct(form, idToOperate));
         dispatch(getInitialData())
         handleCloseUpdateProductModal();
 
     }
-
-    const handleProductPicturesUpdated = (e) => {
-        // setProductPictures([
-        //     ...productPictures,
-        //     e.target.files[0]
-        // ]);
-    }
-
 
     const renderUpdateProductModal = () => {
         return (
@@ -353,7 +323,7 @@ const Products = (props) => {
                     <Col>
                         <Input
                             // type={props.type}
-                            // label="Product Name"
+                            label="Product Name"
                             placeholder={"Product Name"}
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -365,7 +335,7 @@ const Products = (props) => {
                     <Col>
                         <Input
                             type="number"
-                            // label="Product Price"
+                            label="Product Price"
                             placeholder={"Product Price"}
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
@@ -377,7 +347,7 @@ const Products = (props) => {
                     <Col>
                         <Input
                             // type={props.type}
-                            // label="Product Description"
+                            label="Product Description"
                             placeholder={"Product Description"}
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
@@ -401,18 +371,30 @@ const Products = (props) => {
                 </Row>
 
 
+
                 <Row>
                     <Col>
+                            <br />
+                        {
+                            productPicture != "" ?
+                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                                        <label>Current Product Picture </label>
+                                        <div className="productImgContainer">
+                                            <img src={generatePublicUrl(productPicture)} />
+                                        </div>
+                                    </div>
+                                    
+                                </div> : null
+                        }
                         <Input
                             type="file"
                             // label="Product Picture"
                             placeholder={"Product Picture"}
-                            onChange={handleProductPictures}
+                            onChange={(e) => setProductPicture(e.target.files[0])}
                         />
-                        {
-                            productPictures.length > 0 ?
-                                productPictures.map((pic, index) => <div key={index}> {pic.name} </div>) : null
-                        }
+                        <label className="text-danger"><b>Warning:</b> Choosing a new Picture will overwrite the Current Product Picture</label>
+
                     </Col>
                 </Row>
             </NewModal>
@@ -424,15 +406,14 @@ const Products = (props) => {
     const handleCloseDeleteShowModal = () => {
         setShowDeleteProductModal(false);
         setProductDetails(null);
-        
+
     }
 
     const handleShowDeleteShowModal = () => {
         setShowDeleteProductModal(true);
     }
 
-    const deleteProductFinal=()=>{
-        console.log("Have to delete product id ",productDetails._id)
+    const deleteProductFinal = () => {
         dispatch(deleteProduct(productDetails._id));
         dispatch(getInitialData())
         handleCloseDeleteShowModal();
@@ -447,7 +428,7 @@ const Products = (props) => {
                 modelTitle={"Are You Sure??"}
                 operation={deleteProductFinal}
             >
-                <p className="text-danger">Following product will be deleted</p>
+                <p className="text-danger"><b>Following Product Will Be Deleted</b></p>
                 <Row>
                     <Col md="6">
                         <label className="key">Name</label>
@@ -474,26 +455,17 @@ const Products = (props) => {
                 </Row>
                 <Row>
                     <Col>
-                        <label className="key">Product Pictures</label>
+                        <label className="key">Product Picture</label>
                         <div style={{ display: "flex" }}>
-                            {productDetails.productPictures.map(picture =>
-                                <div className="productImgContainer">
-                                    <img src={generatePublicUrl(picture.img)} />
-                                </div>
-                            )}
+                            <div className="productImgContainer">
+                                <img src={generatePublicUrl(productDetails.productPicture)} />
+                            </div>
                         </div>
                     </Col>
                 </Row>
             </NewModal>
         </>)
     }
-
-
-
-
-
-
-
 
     return (
         <Layout sidebar>
@@ -514,10 +486,9 @@ const Products = (props) => {
             </Container>
             {renderAddProductModal()}
             {renderProductDetailsModal()}
-            {showUpdateProductModal ? renderUpdateProductModal(): null}
-            {showDeleteProductModal ? renderDeleteProductModal(): null}
+            {showUpdateProductModal ? renderUpdateProductModal() : null}
+            {showDeleteProductModal ? renderDeleteProductModal() : null}
         </Layout>
     )
 }
-
 export default Products

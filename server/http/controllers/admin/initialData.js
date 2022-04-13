@@ -8,7 +8,7 @@ exports.initialData=async (req,res)=>{
                                 
 
     const products=await Product.find({})
-                                .select("_id name price slug description productPictures category")
+                                .select("_id name price slug description productPicture category")
                                 .populate({path: "category", select:"_id name"}) // it is used to get the data of the category also whose initially id was known (foreign key concept)
                                 .exec();
                                 

@@ -1,25 +1,6 @@
 import axios from "../helpers/axios";
 import { productConstant } from "./Constants";
 
-
-// done by videos
-// export const addProduct = form =>{
-//     return async dispatch => {
-//         const res=await axios.post("product/create", form);
-//         console.log(res.data)
-
-//     }
-// }
-
-// export const allProducts =(categories) => {
-//     return async dispatch => {
-//         const res = await axios.get('product/getproduct');
-//         dispatch({ type: GET_ALL_PRODUCTS_SUCCESS.ADD_NEW_PRODUCT_FAILURE,
-//              payload: { products: res.data.products, categories: categories }
-//         })
-//     }
-// }
-
 // done by me to display added product immediately
 export const addProduct = (form, categories) => {
     return async dispatch => {
@@ -36,16 +17,15 @@ export const addProduct = (form, categories) => {
                 payload: res.data.error
             });
         }
-        console.log(res, res.status);
+        // console.log("Added category Result is ",res);
     }
 
 }
 
 export const updateProduct = (form, id) => {
     return async dispatch => {
-        console.log("Inside update Product action")
         dispatch({ type: productConstant.UPDATE_PRODUCT_REQUEST });
-        const res = await axios.post(`/product/update/${id}`, { form });
+        const res = await axios.post(`/product/update/${id}`, form);
         if (res.status === 201) {
             dispatch({
                 type: productConstant.UPDATE_PRODUCT_SUCCESS,

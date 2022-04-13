@@ -117,7 +117,7 @@ const Home = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-12 gap-y-16">
                                 {category.products.map(product => {
                                     return (<div key={product._id} className="w-full md:w-64">
-                                        <img className="h-40 mb-4 mx-auto" src={generatePublicUrl(product.productPictures[0].img)} alt="" />
+                                        <img className="h-40 mb-4 mx-auto" src={generatePublicUrl(product.productPicture)} alt="" />
                                         <div className="text-center">
                                             <h2 className="mb-4 text-lg">{product.name}</h2>
                                             {/* <span className="size py-1 px-4 rounded-full uppercase text-xs">{product.description}</span> */}

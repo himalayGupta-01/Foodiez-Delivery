@@ -59,7 +59,7 @@ const Category = (props) => {
         let myCategories = [];
         for (let category of categories) {
             myCategories.push(
-                <div style={{ display: "flex", margin: "12px 0", justifyContent: "space-around" }}>
+                <div key={category.name} style={{ display: "flex", margin: "12px 0", justifyContent: "space-around" }}>
                     <li style={{ width: "25%" }} key={category.name}>
                         {category.name}
                     </li>

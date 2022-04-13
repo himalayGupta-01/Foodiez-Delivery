@@ -15,6 +15,6 @@ export const getInitialData = () => {
                 payload: { products }
             });
         }
-        console.log(res);
+        console.log("Fetched Initial Data is ",res);
     }
 }
