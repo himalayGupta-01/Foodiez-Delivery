@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useDispatch, useSelector } from "react-redux"
 import { getAllCategory, getAllProducts } from "../actions/Action"
 import { generatePublicUrl } from '../urlConfig';
+import { updateCart } from '../actions/Cart.actions';
 
 
 
@@ -29,6 +30,7 @@ const Home = () => {
     }
 
     const makeMenu = () => {
+
         let finalData = []
         for (let category of categoryState.categories) {
 
@@ -42,44 +44,32 @@ const Home = () => {
         return finalData;
     }
 
-
-    //till here
-
-
-    const [menu, setMenu] = useState([]);
-    let url = 'http://localhost:8000';
-
-
     useEffect(async () => {
-        //done by me 
         dispatch(getAllCategory());
         dispatch(getAllProducts());
-
-        //till here
-
-        // axios.get(url).then(res => {
-        //     setMenu(res.data)
-        // }).catch(err => {
-        //     console.log(err);
+        // axios.get('/cart').then(res => {
+        //     localStorage.removeItem("cart");
+        //     localStorage.setItem("cart", JSON.stringify(res.data.session.cart))
         // })
-    }, [url])
+    }, [])
 
-    let cartCounter = document.querySelector('#cartCounter')
 
-    function updateCart(pizza) {
-        axios.post('/update-cart', pizza).then(res => {
+
+    function updateCart(item) {
+        axios.post('/update-cart', item).then(res => {
+            localStorage.setItem("cart", JSON.stringify(res.data.session.cart))
             cartCounter.innerText = res.data.totalQty;
         })
     }
 
-    const handleInput = (pizza) => {
-        updateCart(pizza);
+    const handleInput = (item) => {
+        updateCart(item)
         toast.success("product added", {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
-            pauseOnHover: true,
+            pauseOnHover: false,
             draggable: true,
             progress: undefined,
         });

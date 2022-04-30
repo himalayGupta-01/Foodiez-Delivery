@@ -20,7 +20,6 @@ function authController(){
                 }else if(password!=cpassword){
                     return res.status(401).json({error:"Password does not match"});
                 }else{
-                    // const user=new User({name ,email,phone,password,cpassword});
                     const user=new User({name ,email,phone,password});
 
                 await user.save();
@@ -52,7 +51,7 @@ function authController(){
                     const token = await userLogin.generateAuthToken();
                     
                     res.cookie("jwtToken",token,{
-                        expires:new Date(Date.now()+(1000*24*60*60*10)),//10 days
+                        expires:new Date(Date.now()+(1000*60*60)),//1 hour
                         httpOnly:true
                     })
         
@@ -60,7 +59,7 @@ function authController(){
                         console.log("not match");
                         res.status(401).json({error:"Invaid Credentials"})
                     }else{
-                        res.status(200).json({message:"Login successful",token})
+                        res.status(200).json({token:token,user:userLogin,message:'Login Successfull'})
                     }
                 }
                 else{
@@ -72,7 +71,17 @@ function authController(){
                 console.log(error);
                 res.status(500).json({ message: "internal server error", error: error })
             }
-        }
+        },
+        async signout(req,res){
+            try {
+               res.clearCookie('token');
+               res.status(200).json({
+                   message:'Signout Successfull...!'
+               })
+            } catch (error) {
+               console.log(error);
+            }
+       }
     }
 }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Route, Switch } from "react-router-dom"
 import "./App.css";
 import Navbar from './Components/Navbar';
@@ -11,12 +11,25 @@ import Error from "./Components/Error";
 import Footer from "./Components/Footer";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
+import { useDispatch, useSelector } from 'react-redux'
+import { isUserLoggedIn } from './actions/Auth.actions'
+import { getInitialData} from './actions/Action'
 
 
 
 axios.defaults.withCredentials=true;
 
 function App() {
+  const dispatch = useDispatch();
+  const auth = useSelector(state => state.auth)
+
+
+  useEffect(() => {
+    if (!auth.authenticate) {
+      dispatch(isUserLoggedIn());
+    }
+    // dispatch(getInitialData());
+  }, [])
   return (
     <>
       <div className="page-container">

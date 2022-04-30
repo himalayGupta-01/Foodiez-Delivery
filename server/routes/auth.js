@@ -22,11 +22,20 @@ router.get('/cart', cartController().index)
 
 router.post('/update-cart', cartController().update)
 
+router.post('/increase-cart', cartController().increase)
+
+router.post('/decrease-cart', cartController().decrease)
+
+router.post('/remove-from-cart', cartController().remove)
+
 //user registration route
 router.post('/signup',validateSignUpRequest,isRequestValidated,authController().signup)
 
 // user login route
 router.post('/signin',validateSignInRequest,isRequestValidated,authController().signin)
+
+//user logout route
+router.post('/signout',authController().signout)
 
  
 module.exports=router;

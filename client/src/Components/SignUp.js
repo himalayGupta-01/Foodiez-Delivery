@@ -1,12 +1,21 @@
 import React, { useState } from "react";
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useHistory, Redirect } from 'react-router-dom';
 import { FaUserAlt, FaEnvelope, FaPhoneAlt, FaUnlockAlt } from 'react-icons/fa';
 import signUpPic from "../images/signup.png";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { signup } from '../actions/User.actions'
+
+
 
 
 const SignUp = () => {
+
+    const auth = useSelector(state => state.auth);
+    const userState = useSelector(state => state.user);
+
+    const dispatch=useDispatch()
 
     const history = useHistory();
 
@@ -21,47 +30,45 @@ const SignUp = () => {
         setUser({ ...user, [name]: value });
     };
 
-
-    const PostData = async (e) => {
+    const PostData = (e) => {
         e.preventDefault();
-        const { name, email, phone, password, cpassword } = user;
+        dispatch(signup(user))
+        if (userState.message!="User registered successfully") {
+                    toast.error("Invalid Registration", {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
+                else {
+                    toast.success("Registration sucessful", {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+        
+                    history.push("/signin");
+                }
 
-        const res = await fetch("/signup", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                name, email, phone, password, cpassword
-            })
-        })
-
-        const data = await res.json();
-
-        if ((res.status >= 400 && res.status<=500) || !data) {
-            toast.error("Invalid Registration", {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
-        else {
-            toast.success("Registration sucessful", {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-
-            history.push("/signin");
-        }
-
+        
     }
+
+    if (auth.authenticate) {
+        return <Redirect to="/" />
+    }
+
+    if (userState.loading) {
+        return <h1>...Loading !</h1>
+    }
+
 
     return (
         <>
@@ -115,7 +122,7 @@ const SignUp = () => {
                                 <button className=" btn-primary rounded-full text-white font-bold py-2 px-4 focus:shadow-outline" name="signup" value="signup" onClick={PostData} type="button">
                                     Sign Up
                                 </button>
-                                <ToastContainer/>
+                                <ToastContainer />
                                 <NavLink className="inline-block align-baseline font-bold text-sm " to="/signin">
                                     Already have an account?
                                 </NavLink>
