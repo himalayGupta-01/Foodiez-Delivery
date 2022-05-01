@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Redirect } from 'react-router-dom'
 import { FaPlus, FaMinus, FaTrashAlt } from 'react-icons/fa';
 import EmptyCart from "../images/empty-cart.png"
 import CartIcon from "../images/cart-black.png"
-import axios from 'axios';
-import { useSelector } from "react-redux"
-
+import axios from "axios";
+import { useSelector, useDispatch } from "react-redux"
 import { generatePublicUrl } from "../urlConfig"
+import { takeOrder } from '../actions/Order.actions';
 
 const Cart = () => {
 
     const auth = useSelector(state => state.auth)
+    const order = useSelector(state => state.order)
+
+    const dispatch = useDispatch();
 
     //getting full cart from session
     const [cart, setCart] = useState({
         ...JSON.parse(localStorage.getItem("cart"))
     })
+    const [phone, setPhone] = useState("");
+    const [address, setAddress] = useState("")
 
     //incrementing value of a item in cart
     const increment = (item) => {
@@ -53,9 +58,28 @@ const Cart = () => {
         })
     }
 
+    //order items in cart
+    const orderCart = async () => {
+        const order = {
+            user: auth.user._id,
+            items: { ...cart },
+            phone,
+            address
+        }
+        await dispatch(takeOrder(order));
+        axios.post('/delete-cart').then(res => {
+            localStorage.removeItem("cart");
+            localStorage.setItem("cart", JSON.stringify({items:{}, totalPrice:0, totalQty:0}))
+            setCart({
+                ...JSON.parse(localStorage.getItem("cart"))
+            })
+            cartCounter.innerText =  "" ;
+        })
+    }
+
     //displaying the cart
     const renderCart = () => {
-        console.log(cart)
+        // console.log(cart)
 
         let totalCart = []
 
@@ -122,7 +146,21 @@ const Cart = () => {
 
                             {
                                 auth.authenticate ? <div>
-                                    <button className="btn-primary px-6 py-2 rounded-full text-white font-bold mt-6" type="submit">Order Now</button>
+                                    <form className="mt-12" action="">
+                                        <input className="border border-gray-400 p-2 w-1/2 mb-4"
+                                            type="number"
+                                            placeholder="Phone Number"
+                                            value={phone}
+                                            onChange={(e) => setPhone(e.target.value)}
+                                        /> <br />
+                                        <input className="border border-gray-400 p-2 w-1/2 mb-4"
+                                            type="text"
+                                            placeholder="Address"
+                                            value={address}
+                                            onChange={(e) => setAddress(e.target.value)}
+                                        />
+                                    </form>
+                                    <NavLink to="/my-orders"><button className="btn-primary px-6 py-2 rounded-full text-white font-bold mt-6" onClick={orderCart}>Order Now</button></NavLink>
                                 </div> :
                                     <>
                                         <NavLink className=" cart-login inline-block cursor-pointer px-6 py-2 rounded-full btn-primary text-white font-bold mt-6" to="/signin">Login to Continue</NavLink>

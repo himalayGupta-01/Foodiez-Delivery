@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { NavLink, Redirect } from 'react-router-dom'
 import { FaShoppingCart } from 'react-icons/fa';
 import logo from '../images/3697355.png'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,7 +15,7 @@ const Navbar = () => {
     const logout = () => {
         dispatch(signout())
     }
-    const [cartValue,setCartValue]=useState("");
+    const [cartValue, setCartValue] = useState("");
     let cartCounter = document.querySelector('#cartCounter')
 
     useEffect(() => {
@@ -23,10 +23,10 @@ const Navbar = () => {
             localStorage.setItem("cart", JSON.stringify(res.data.session.cart))
             await setCartValue(res.data.totalQty);
         })
-    
+
     }, [])
-    
-   
+
+
     return (
         <>
             <nav className=" container mx-auto flex items-center justify-between ">
@@ -43,9 +43,15 @@ const Navbar = () => {
                         </li>
 
                         {auth.authenticate ?
-                            <li className=" ml-6">
-                                <span style={{cursor:"pointer"}} className="nav-link" onClick={logout}>Signout</span>
-                            </li> :
+                            <>
+                                <li className=" ml-6">
+                                    <span style={{ cursor: "pointer" }} className="nav-link" onClick={logout}>Signout</span>
+                                </li>
+                                <li className=" ml-6">
+                                    <NavLink activeClassName="nav-link active" to="/my-orders">My Orders</NavLink>
+                                </li>
+                            </>
+                            :
                             <>
                                 <li className=" ml-6">
                                     <NavLink activeClassName="nav-link active" to="/signin">Login</NavLink>
@@ -55,9 +61,9 @@ const Navbar = () => {
                                 </li>
                             </>
                         }
-                        
+
                         <li className=" ml-6 ">
-                            <NavLink className="nav-link px-4 py-2 rounded-full flex items-center " id='cart-icon' to="/cart"><span id='cartCounter'>{cartValue==0? "":cartValue}</span><FaShoppingCart /></NavLink>
+                            <NavLink className="nav-link px-4 py-2 rounded-full flex items-center " id='cart-icon' to="/cart"><span id='cartCounter'>{cartValue == 0 ? "" : cartValue}</span><FaShoppingCart /></NavLink>
                         </li>
                     </ul>
                 </div>

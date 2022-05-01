@@ -1,11 +1,14 @@
 const Category =require("../../../models/category");
 const Product=require("../../../models/product");
+const Order =require("../../../models/order")
 
 
 exports.initialData=async (req,res)=>{
 
     const categories=await Category.find({});
-                                
+                      
+    // const orders=await Order.find({},null,{sort:{"createdAt":-1}});
+    const orders=await Order.find({status:{$ne:"Delivered"}});
 
     const products=await Product.find({})
                                 .select("_id name price slug description productPicture category")
@@ -14,7 +17,8 @@ exports.initialData=async (req,res)=>{
                                 
     res.status(200).json({
         categories,
-        products
+        products,
+        orders
     })
 
 

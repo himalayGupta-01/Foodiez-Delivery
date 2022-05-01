@@ -1,6 +1,7 @@
 const jwt=require('jsonwebtoken');
 
 exports.requireSignin=(req,res,next)=>{
+    // console.log("Header is ",req.headers.authorization)
 
     if(req.headers.authorization){
         

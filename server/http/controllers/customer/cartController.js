@@ -72,6 +72,10 @@ function cartController() {
             cart.totalPrice = cart.totalPrice - ((cart.items[req.body._id].qty)*(req.body.price))
             delete cart.items[req.body._id]
             return res.json({ totalQty: req.session.cart.totalQty, session: req.session })
+        },
+        deleteSession(req,res){
+            delete req.session.cart;
+            return res.json({message: "Deleted Session"})
         }
     }
 }

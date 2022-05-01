@@ -49,7 +49,7 @@ app.use(require('./routes/auth'));
 app.use(require('./routes/admin/auth'));
 app.use(require('./routes/category'));
 app.use(require('./routes/product'));
-app.use(require('./routes/cart'));
+app.use(require('./routes/order'));
 app.use(require("./routes/admin/initialData"));
 
 // for acessing static files through path name

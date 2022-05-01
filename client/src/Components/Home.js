@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getAllCategory, getAllProducts } from "../actions/Action"
 import { generatePublicUrl } from '../urlConfig';
 import { updateCart } from '../actions/Cart.actions';
+import {getOrderById } from '../actions/Order.actions';
 
 
 
@@ -16,6 +17,7 @@ const Home = () => {
     //done by me
     const categoryState = useSelector(state => state.category);
     const productState = useSelector(state => state.product)
+    const auth = useSelector(state => state.auth)
     const dispatch = useDispatch();
 
     const getProductByCategoryId = (categoryId) => {
@@ -47,10 +49,7 @@ const Home = () => {
     useEffect(async () => {
         dispatch(getAllCategory());
         dispatch(getAllProducts());
-        // axios.get('/cart').then(res => {
-        //     localStorage.removeItem("cart");
-        //     localStorage.setItem("cart", JSON.stringify(res.data.session.cart))
-        // })
+        // dispatch(getOrderById(auth.user._id));
     }, [])
 
 

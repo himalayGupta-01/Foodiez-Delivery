@@ -7,6 +7,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import { login } from '../actions/Action'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import {getOrderById } from '../actions/Order.actions';
+
 
 const Login = () => {
 
@@ -22,7 +24,7 @@ const Login = () => {
       email, password
     }
     await dispatch(login(user));
-
+    // localStorage.setItem("cart", JSON.stringify({items:{}, totalPrice:0, totalQty:0}))
     // console.log(auth)
     // console.log(auth.authenticate)
     // if (auth.authenticate===true) {
@@ -51,6 +53,7 @@ const Login = () => {
   }
 
     if (auth.authenticate) {
+      // dispatch(getOrderById(auth.user._id));
       return <Redirect to="/" />
     }
 

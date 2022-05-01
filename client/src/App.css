@@ -53,6 +53,18 @@ nav li .nav-link:hover{
   transition: var(--smooth);
 }
 
+.nav-link-blue{
+  color:white;
+  background-color: blue;
+  transition: var(--smooth);
+}
+
+
+.nav-link-blue:hover{
+  background-color: rgb(53, 53, 157);
+  transition: var(--smooth);
+}
+
 .active{
   color:var(--primary);
 }

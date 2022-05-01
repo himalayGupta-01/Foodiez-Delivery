@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom"
 import "./App.css";
 import Navbar from './Components/Navbar';
@@ -9,15 +9,16 @@ import Contact from './Components/Contact';
 import Cart from "./Components/Cart";
 import Error from "./Components/Error";
 import Footer from "./Components/Footer";
+import MyOrders from "./Components/MyOrders";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from 'react-redux'
 import { isUserLoggedIn } from './actions/Auth.actions'
-import { getInitialData} from './actions/Action'
+import { getInitialData } from './actions/Action'
 
 
 
-axios.defaults.withCredentials=true;
+axios.defaults.withCredentials = true;
 
 function App() {
   const dispatch = useDispatch();
@@ -30,6 +31,14 @@ function App() {
     }
     // dispatch(getInitialData());
   }, [])
+
+  const alertMsg = document.querySelector("#success-alert")
+  if (alertMsg) {
+    setTimeout(() => {
+      alertMsg.remove();
+    }, 3000);
+  } 
+
   return (
     <>
       <div className="page-container">
@@ -49,6 +58,9 @@ function App() {
             </Route>
             <Route path="/signup">
               <SignUp />
+            </Route>
+            <Route path="/my-orders">
+              <MyOrders />
             </Route>
             <Route path="/cart">
               <Cart />
