@@ -16,7 +16,12 @@ function orderController() {
             Order.findOneAndUpdate({_id:id},{$set:{status:status}}).exec((error, order) => {
                 if (error) return res.status(400).json({ error })
         
-                if (order) {
+                if (order) {  
+
+                    //emit an event whenever the order status get updated using eventEmitter
+                    const eventEmitter=req.app.get("eventEmitter")        //this req.app was binded in the app.js server file
+                    eventEmitter.emit("orderUpdated")         // emit an event of type "orderUpdated"
+
                     return res.status(200).json({ order })
                 }
             });

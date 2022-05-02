@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useRef } from "react";
 import { Route, Switch } from "react-router-dom"
 import "./App.css";
 import Navbar from './Components/Navbar';
@@ -15,17 +15,27 @@ import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from 'react-redux'
 import { isUserLoggedIn } from './actions/Auth.actions'
 import { getInitialData } from './actions/Action'
+// import {io} from "socket.io-client";
 
 
 
 axios.defaults.withCredentials = true;
 
 function App() {
+
+  // const socket=useRef();
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth)
-
-
+  
+  
   useEffect(() => {
+  //   socket.current=io("http://localhost:8000")
+  //   socket.current.on("connection",()=>{
+  //     console.log("connected to server")
+  //   })
+
+    // socket.current.emit("message","data is mine this")
+
     if (!auth.authenticate) {
       dispatch(isUserLoggedIn());
     }

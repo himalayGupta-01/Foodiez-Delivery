@@ -1,12 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { FaSyncAlt } from 'react-icons/fa'
 import { useSelector, useDispatch } from "react-redux"
 import { Col, Container, Row, Table, Button } from 'react-bootstrap';
 import { getOrderById } from '../actions/Order.actions';
-import { Redirect,useLocation } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 import { generatePublicUrl } from "../urlConfig";
 import NewModal from './NewModal';
+
+// 1 importing io from socket.io-client
+import { io } from "socket.io-client";
+
+
 const MyOrders = (props) => {
+
+    //using Ref
+    const socket = useRef();
 
     const order = useSelector(state => state.order)
     const auth = useSelector(state => state.auth)
@@ -14,10 +22,24 @@ const MyOrders = (props) => {
     const [showDetails, setShowDetails] = useState(false);
     const dispatch = useDispatch();
 
+    socket.current = io("http://localhost:8000")
+
     useEffect(async () => {
+
+        // socket.current.on("connection", () => {
+        //     console.log("connected to server")
+        // })    
         dispatch(getOrderById(auth.user._id));
     }, [])
-    let location=useLocation()
+
+    //emit join event to socket using id as getUpdatedOrder
+    socket.current.emit("join", "getUpdatedOrder")
+    //if an event of type "orderUpdated" emits then do what
+    socket.current.on("orderUpdated", () => {
+        dispatch(getOrderById(auth.user._id));
+    })
+
+    let location = useLocation()
     console.log(location)
 
 
@@ -40,9 +62,9 @@ const MyOrders = (props) => {
             myWidth = "100%";
             myColor = "green";
         }
-        return <td style={{width:"15%"}}>
+        return <td style={{ width: "15%" }}>
             <div style={{ width: "100%", borderRadius: "30px", border: "1px solid black" }}>
-                <div id="my" style={{ height: "10px", width: `${myWidth}`, backgroundColor: `${myColor}` }}> </div>
+                <div id="my" style={{ borderRadius: "30px", height: "10px", width: `${myWidth}`, backgroundColor: `${myColor}` }}> </div>
             </div>
             {status}
         </td>

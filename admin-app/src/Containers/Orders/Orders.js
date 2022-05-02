@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Container, Row, Table, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../../Components/Layout/Layout';
@@ -6,9 +6,10 @@ import { getInitialData } from '../../actions/initialData.action';
 import NewModal from "../../Components/UI/Modal/NewModal";
 import { generatePublicUrl } from '../../urlConfig';
 import { updateOrder } from "../../actions/Order.actions"
+import { FaSyncAlt } from 'react-icons/fa';
 import "./style.css";
 
-const Orders = (props) => {
+const Orders = () => {
     const [orderStatus, setOrderStatus] = useState("")
     const [currentOrder, setCurrentOrder] = useState({})
     const [showUpdateOrderModal, setShowUpdateOrderModal] = useState(false);
@@ -19,7 +20,7 @@ const Orders = (props) => {
 
     const dispatch = useDispatch();
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(getInitialData())
     })
 
@@ -30,12 +31,13 @@ const Orders = (props) => {
             <Table style={{ fontSize: "16px", width: "100%" }} responsive="sm">
                 <thead style={{ textAlign: "center" }}>
                     <tr>
+                        {/* <th>S. No.</th> */}
                         <th>Order Date</th>
                         <th>Order Time</th>
                         <th>Phone</th>
                         <th>Address</th>
                         <th>Payment Mode</th>
-                        <th>Update Status</th>
+                        <th>Current Status</th>
                         <th style={{ textAlign: "center" }}>View Items</th>
 
                     </tr>
@@ -57,11 +59,11 @@ const Orders = (props) => {
                                         display: "flex",
                                         justifyContent: "space-around"
                                     }}>
-                                        <Button variant="outline-primary" onClick={(e) => {
+                                        <Button variant="outline-success" onClick={(e) => {
                                             e.preventDefault();
                                             setIdToToOperate(order._id)
                                             handleShowUpdateOrderModal(order);
-                                        }}>View Order and Update</Button>
+                                        }}>View Order and Update Status</Button>
                                     </td>
                                 </tr>
 
@@ -195,8 +197,9 @@ const Orders = (props) => {
             <Container>
                 <Row>
                     <Col md={12}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop:"25px" }}>
                             <h3>Orders</h3>
+                            <button className="syncBtn" onClick={() => { dispatch(getInitialData()) }} ><FaSyncAlt /></button>
                         </div>
                     </Col>
                 </Row>
