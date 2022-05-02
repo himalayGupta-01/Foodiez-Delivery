@@ -69,17 +69,20 @@ const Cart = () => {
         await dispatch(takeOrder(order));
         axios.post('/delete-cart').then(res => {
             localStorage.removeItem("cart");
-            localStorage.setItem("cart", JSON.stringify({items:{}, totalPrice:0, totalQty:0}))
+            localStorage.setItem("cart", JSON.stringify({ items: {}, totalPrice: 0, totalQty: 0 }))
             setCart({
                 ...JSON.parse(localStorage.getItem("cart"))
             })
-            cartCounter.innerText =  "" ;
+            cartCounter.innerText = "";
         })
     }
 
     //displaying the cart
     const renderCart = () => {
-        // console.log(cart)
+        if (!cart.items) {
+            console.log("Cart value is ", cart)
+            return <></>;
+        }
 
         let totalCart = []
 
@@ -128,7 +131,7 @@ const Cart = () => {
         <>
             <section className="cart py-16">
 
-                {cart.totalQty != 0 ? <>
+                {cart.items && cart.totalQty != 0 ? <>
                     <div className=" order container mx-auto w-1/2">
                         <div className="flex items-center border-b border-gray-300 pb-4">
                             <img src={CartIcon} alt="cart-icon" />
@@ -160,7 +163,10 @@ const Cart = () => {
                                             onChange={(e) => setAddress(e.target.value)}
                                         />
                                     </form>
-                                    <NavLink to="/my-orders"><button className="btn-primary px-6 py-2 rounded-full text-white font-bold mt-6" onClick={orderCart}>Order Now</button></NavLink>
+                                    <NavLink to={{
+                                        pathname: '/my-orders',
+                                        state: { showSuccess: true }
+                                    }} ><button className="btn-primary px-6 py-2 rounded-full text-white font-bold mt-6" onClick={orderCart}>Order Now</button></NavLink>
                                 </div> :
                                     <>
                                         <NavLink className=" cart-login inline-block cursor-pointer px-6 py-2 rounded-full btn-primary text-white font-bold mt-6" to="/signin">Login to Continue</NavLink>

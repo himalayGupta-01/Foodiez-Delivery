@@ -32,12 +32,7 @@ function App() {
     // dispatch(getInitialData());
   }, [])
 
-  const alertMsg = document.querySelector("#success-alert")
-  if (alertMsg) {
-    setTimeout(() => {
-      alertMsg.remove();
-    }, 3000);
-  } 
+  
 
   return (
     <>

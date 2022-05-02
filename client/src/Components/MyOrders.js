@@ -3,10 +3,10 @@ import { FaSyncAlt } from 'react-icons/fa'
 import { useSelector, useDispatch } from "react-redux"
 import { Col, Container, Row, Table, Button } from 'react-bootstrap';
 import { getOrderById } from '../actions/Order.actions';
-import { Redirect } from "react-router-dom";
+import { Redirect,useLocation } from "react-router-dom";
 import { generatePublicUrl } from "../urlConfig";
 import NewModal from './NewModal';
-const MyOrders = () => {
+const MyOrders = (props) => {
 
     const order = useSelector(state => state.order)
     const auth = useSelector(state => state.auth)
@@ -14,16 +14,20 @@ const MyOrders = () => {
     const [showDetails, setShowDetails] = useState(false);
     const dispatch = useDispatch();
 
-
-
     useEffect(async () => {
         dispatch(getOrderById(auth.user._id));
     }, [])
+    let location=useLocation()
+    console.log(location)
 
 
     const getStatus = (status) => {
-        let myWidth = "25%";
+        let myWidth = "10%";
         let myColor = "yellow";
+        if (status === "Order Confirmed") {
+            myWidth = "25%";
+            myColor = "#FE5F1E"
+        }
         if (status === "Being Cooked") {
             myWidth = "50%";
             myColor = "red"
@@ -36,7 +40,7 @@ const MyOrders = () => {
             myWidth = "100%";
             myColor = "green";
         }
-        return <td>
+        return <td style={{width:"15%"}}>
             <div style={{ width: "100%", borderRadius: "30px", border: "1px solid black" }}>
                 <div id="my" style={{ height: "10px", width: `${myWidth}`, backgroundColor: `${myColor}` }}> </div>
             </div>
@@ -44,6 +48,12 @@ const MyOrders = () => {
         </td>
     }
 
+    const alertMsg = document.querySelector("#success-alert")
+    if (alertMsg) {
+        setTimeout(() => {
+            alertMsg.remove();
+        }, 3000);
+    }
 
     const handleShowOrderDetails = (order) => {
         setCurrentOrder(order);
@@ -137,14 +147,14 @@ const MyOrders = () => {
                         <h1 className="font-bold text-lg mb-4">All orders</h1>
                         <button className="nav-link-blue px-4 py-2 rounded-full flex items-center " onClick={() => { dispatch(getOrderById(auth.user._id)) }} ><FaSyncAlt /></button>
                     </div>
-                    <div id="success-alert" className="flex items-center bg-green-500 text-white text-sm font-bold px-4 py-3"
+                    {location.state && location.state.showSuccess ? <div id="success-alert" className="flex items-center bg-green-500 text-white text-sm font-bold px-4 py-3"
                         role="alert">
                         <svg className="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                             <path
                                 d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z" />
                         </svg>
                         <p>Order Placed Successfully</p>
-                    </div>
+                    </div> : null}
 
                     <Container>
                         <Row>
@@ -160,6 +170,7 @@ const MyOrders = () => {
                                             <th>Address</th>
                                             <th>Payment Mode</th>
                                             <th>Status</th>
+                                            <th>Updated At</th>
                                             <th style={{ textAlign: "center" }}>View Items</th>
 
                                         </tr>
@@ -169,25 +180,25 @@ const MyOrders = () => {
                                             order.orders.length > 0 ?
                                                 order.orders.map((order, index) =>
                                                     <tr key={order._id}>
-                                                        {/* <td>{index + 1}</td> */}
-                                                        <td>{new Date((order.createdAt).toString()).toISOString().split("T")[0]}</td>
-                                                        
-                                                        <td>{new Date((order.createdAt).toString()).toISOString().split("T")[1].split(".")[0]}</td>
+                                                        <td>{`${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[1]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[0]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[2]}`}</td>
+                                                        <td>{new Date((order.createdAt).toString()).toLocaleTimeString()}</td>
+
                                                         <td>{order.phone}</td>
                                                         <td>{order.address}</td>
                                                         <td>{order.paymentType}</td>
                                                         {getStatus(order.status)}
+                                                        <td>{new Date((order.updatedAt).toString()).toLocaleTimeString()}</td>
 
 
                                                         <td style={{
                                                             display: "flex",
                                                             justifyContent: "space-around",
-                                                            flexDirection:"column"
+                                                            flexDirection: "column"
                                                         }}>
                                                             <Button variant="outline-primary" onClick={() => {
                                                                 handleShowOrderDetails(order)
                                                             }}>Details</Button>
-                                                            <br/>
+                                                            <br />
                                                         </td>
                                                     </tr>
 

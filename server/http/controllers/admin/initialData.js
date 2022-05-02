@@ -8,7 +8,7 @@ exports.initialData=async (req,res)=>{
     const categories=await Category.find({});
                       
     // const orders=await Order.find({},null,{sort:{"createdAt":-1}});
-    const orders=await Order.find({status:{$ne:"Delivered"}});
+    const orders=await Order.find({});
 
     const products=await Product.find({})
                                 .select("_id name price slug description productPicture category")

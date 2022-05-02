@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { Col, Container, Row, Table, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../../Components/Layout/Layout';
@@ -18,6 +18,10 @@ const Orders = (props) => {
     const order = useSelector(state => state.order)
 
     const dispatch = useDispatch();
+
+    useEffect(()=>{
+        dispatch(getInitialData())
+    })
 
 
     //to show the orders
@@ -40,27 +44,27 @@ const Orders = (props) => {
                     {
                         order.orders.length > 0 ?
                             order.orders.map((order, index) =>
-                                    <tr key={order._id}>
-                                        {/* <td>{index + 1}</td> */}
-                                        <td>{new Date((order.createdAt).toString()).toISOString().split("T")[0]}</td>
-                                        <td>{new Date((order.createdAt).toString()).toISOString().split("T")[1].split(".")[0]}</td>
-                                        <td>{order.phone}</td>
-                                        <td>{order.address}</td>
-                                        <td>{order.paymentType}</td>
-                                        <td>{order.status}</td>
+                                <tr key={order._id}>
+                                    {/* <td>{index + 1}</td> */}
+                                    <td>{`${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[1]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[0]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[2]}`}</td>
+                                    <td>{new Date((order.createdAt).toString()).toLocaleTimeString()}</td>
+                                    <td>{order.phone}</td>
+                                    <td>{order.address}</td>
+                                    <td>{order.paymentType}</td>
+                                    <td>{order.status}</td>
 
-                                        <td style={{
-                                            display: "flex",
-                                            justifyContent: "space-around"
-                                        }}>
-                                            <Button variant="outline-primary" onClick={(e) => {
-                                                e.preventDefault();
-                                                setIdToToOperate(order._id)
-                                                handleShowUpdateOrderModal(order);
-                                            }}>View Order and Update</Button>
-                                        </td>
-                                    </tr>
-                                    
+                                    <td style={{
+                                        display: "flex",
+                                        justifyContent: "space-around"
+                                    }}>
+                                        <Button variant="outline-primary" onClick={(e) => {
+                                            e.preventDefault();
+                                            setIdToToOperate(order._id)
+                                            handleShowUpdateOrderModal(order);
+                                        }}>View Order and Update</Button>
+                                    </td>
+                                </tr>
+
 
                             )
                             :
@@ -136,6 +140,7 @@ const Orders = (props) => {
                     <div>
                         <h5>Update Status</h5>
                         <select
+                            disabled={orderStatus === "Delivered" ? true : false}
                             className="form-control form-select"
                             value={orderStatus}
                             onChange={(e) => {
@@ -143,6 +148,7 @@ const Orders = (props) => {
                             }}
                         >
                             <option key="Order Placed" value="Order Placed">Order Placed</option>
+                            <option key="Order Confirmed" value="Order Confirmed">Order Confirmed</option>
                             <option key="Being Cooked" value="Being Cooked">Being Cooked</option>
                             <option key="Out For Delivery" value="Out For Delivery">Out for Delivery</option>
                             <option key="Delivered" value="Delivered">Delivered</option>
@@ -165,6 +171,7 @@ const Orders = (props) => {
         return <>
             <NewModal
                 // size="lg"
+                dontShowSubmitButton={currentOrder.status === "Delivered" ? true : false}
                 show={showUpdateOrderModal}
                 handleClose={handleClose}
                 modelTitle={"View and Update Order"}
