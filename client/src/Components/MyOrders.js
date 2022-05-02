@@ -125,6 +125,7 @@ const MyOrders = (props) => {
     const renderOrderDetails = () => {
         return (
             <NewModal
+                size="lg"
                 show={showDetails}
                 handleClose={() => setShowDetails(false)}
                 modelTitle={"Order Summary"}
@@ -200,29 +201,32 @@ const MyOrders = (props) => {
                                     <tbody style={{ textAlign: "center" }}>
                                         {
                                             order.orders.length > 0 ?
-                                                order.orders.map((order, index) =>
-                                                    <tr key={order._id}>
-                                                        <td>{`${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[1]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[0]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[2]}`}</td>
-                                                        <td>{new Date((order.createdAt).toString()).toLocaleTimeString()}</td>
+                                                order.orders.map((order, index) => {
+                                                    return <>
+                                                        <tr key={order._id}>
+                                                            <td>{`${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[1]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[0]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[2]}`}</td>
+                                                            <td>{new Date((order.createdAt).toString()).toLocaleTimeString()}</td>
 
-                                                        <td>{order.phone}</td>
-                                                        <td>{order.address}</td>
-                                                        <td>{order.paymentType}</td>
-                                                        {getStatus(order.status)}
-                                                        <td>{new Date((order.updatedAt).toString()).toLocaleTimeString()}</td>
+                                                            <td>{order.phone}</td>
+                                                            <td>{order.address}</td>
+                                                            <td>{order.paymentType}</td>
+                                                            {getStatus(order.status)}
+                                                            <td>{new Date((order.updatedAt).toString()).toLocaleTimeString()}</td>
 
 
-                                                        <td style={{
-                                                            display: "flex",
-                                                            justifyContent: "space-around",
-                                                            flexDirection: "column"
-                                                        }}>
-                                                            <Button variant="outline-primary" onClick={() => {
-                                                                handleShowOrderDetails(order)
-                                                            }}>Details</Button>
-                                                            <br />
-                                                        </td>
-                                                    </tr>
+                                                            <td style={{
+                                                                display: "flex",
+                                                                justifyContent: "space-around",
+                                                                // flexDirection: "column"
+                                                            }}>
+                                                                <Button variant="outline-primary" onClick={() => {
+                                                                    handleShowOrderDetails(order)
+                                                                }}>Details</Button>
+                                                            </td>
+                                                        </tr>
+                                                        <br />
+                                                    </>
+                                                }
 
                                                 )
                                                 :
