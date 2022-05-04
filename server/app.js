@@ -95,9 +95,10 @@ io.on("connection", (socket) => {
 
 //10 if an event of type/id "orderUpdated" was occured/emitted then emit a event in the private room using the id sent by the room itself and also send data
 // ***************************
-eventEmitter.on("orderUpdated",()=>{
+eventEmitter.on("orderUpdated",(data)=>{
     // 11 emits a socket event "orderUpdated to private room having id "getUpdatedOrder" 
-    io.to("getUpdatedOrder").emit("orderUpdated")
+    // console.log("DATA is ",data)
+    io.to("getUpdatedOrder").emit("orderUpdated",data)
 })
 
 // 12 private room have a handler to what to do if a socket event of type "orderUpdated" was emit

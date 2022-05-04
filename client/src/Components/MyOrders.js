@@ -6,59 +6,52 @@ import { getOrderById } from '../actions/Order.actions';
 import { Redirect, useLocation } from "react-router-dom";
 import { generatePublicUrl } from "../urlConfig";
 import NewModal from './NewModal';
+import { socket } from './socketIo';
 
-// 1 importing io from socket.io-client
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
 
 const MyOrders = (props) => {
 
-    //using Ref
-    //***********************888**8 */
-    const socket = useRef();
+    // const socket = useRef();
 
     const order = useSelector(state => state.order)
     const auth = useSelector(state => state.auth)
     const [currentOrder, setCurrentOrder] = useState({})
     const [showDetails, setShowDetails] = useState(false);
     const dispatch = useDispatch();
-    console.log("Value of auth before use Effect is", auth.user.name)
+    // console.log("Value of auth before use Effect is", auth.user.name)
 
-    // ************************
-    socket.current = io("http://localhost:8000")
 
-    
-    
+
+
     useEffect(() => {
-        console.log("Due to use effect")
-        
+        // socket.current = io("http://localhost:8000")
+
         // socket.current.on("connection", () => {
-            //     console.log("connected to server")
-            // })  
-            //******************* */  
-            socket.current.emit("join", "getUpdatedOrder");
-            
-            socket.current.on("orderUpdated", () => {
-                // console.log(auth.user.name)
-                dispatch(getOrderById(auth.user._id));
-            })
-            
-            // socket.current.disconnect();
+        //     console.log("connected to server")
+        // })  
+        
         //emit join event to socket using id as getUpdatedOrder
+        socket.emit("join", "getUpdatedOrder");
+        
         //if an event of type "orderUpdated" emits then do what
-        // ************************
-        // socket.current.on("orderUpdated", () => {
-        //     // console.log(auth.user.name)
-        //     dispatch(getOrderById(auth.user._id));
-        // })
+        socket.on("orderUpdated", (data) => {
+            // console.log("DATA IS ",data)
+            // console.log(auth.user.name)
+            if(data===auth.user._id)
+                dispatch(getOrderById(auth.user._id));
+        })
+        
         dispatch(getOrderById(auth.user._id));
+        // return socket.disconnect()
+        // return socket.current.disconnect()
     }, [])
 
 
 
 
     let location = useLocation()
-    // console.log(location)
 
 
     const getStatus = (status) => {

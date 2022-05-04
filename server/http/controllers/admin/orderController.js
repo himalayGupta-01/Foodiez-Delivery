@@ -21,7 +21,7 @@ function orderController() {
                     //emit an event whenever the order status get updated using eventEmitter
                     // *************************
                     const eventEmitter=req.app.get("eventEmitter")        //this req.app was binded in the app.js server file
-                    eventEmitter.emit("orderUpdated",id)         // emit an event of type "orderUpdated"
+                    eventEmitter.emit("orderUpdated",order.user)         // emit an event of type "orderUpdated"
 
                     return res.status(200).json({ order })
                 }
