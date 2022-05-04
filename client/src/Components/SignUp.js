@@ -64,19 +64,19 @@ const SignUp = () => {
         
     }
 
-    // useEffect(() => {
-    //     if (userState.message=="User registered successfully") {
-    //         history.push("/signin")
-    //     }
-    // }, [userState]);
+    useEffect(() => {
+        if (userState.message=="User registered successfully") {
+            history.push("/signin")
+        }
+    }, [userState]);
 
     if (auth.authenticate) {
         return <Redirect to="/" />
     }
 
-    if (userState.loading) {
-        return <h1>...Loading !</h1>
-    }
+    // if (userState.loading) {
+    //     return <h1>...Loading !</h1>
+    // }
 
 
     return (

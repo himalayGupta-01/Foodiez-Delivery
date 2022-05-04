@@ -22,24 +22,35 @@ const MyOrders = (props) => {
     const [currentOrder, setCurrentOrder] = useState({})
     const [showDetails, setShowDetails] = useState(false);
     const dispatch = useDispatch();
+    console.log("Value of auth before use Effect is", auth.user.name)
 
     // ************************
     socket.current = io("http://localhost:8000")
 
-    useEffect(async () => {
-
+    
+    
+    useEffect(() => {
+        console.log("Due to use effect")
+        
         // socket.current.on("connection", () => {
-        //     console.log("connected to server")
-        // })  
-        //******************* */  
-        socket.current.emit("join", "getUpdatedOrder");
-
+            //     console.log("connected to server")
+            // })  
+            //******************* */  
+            socket.current.emit("join", "getUpdatedOrder");
+            
+            socket.current.on("orderUpdated", () => {
+                // console.log(auth.user.name)
+                dispatch(getOrderById(auth.user._id));
+            })
+            
+            // socket.current.disconnect();
         //emit join event to socket using id as getUpdatedOrder
         //if an event of type "orderUpdated" emits then do what
         // ************************
-        socket.current.on("orderUpdated", () => {
-            dispatch(getOrderById(auth.user._id));
-        })
+        // socket.current.on("orderUpdated", () => {
+        //     // console.log(auth.user.name)
+        //     dispatch(getOrderById(auth.user._id));
+        // })
         dispatch(getOrderById(auth.user._id));
     }, [])
 
@@ -47,7 +58,7 @@ const MyOrders = (props) => {
 
 
     let location = useLocation()
-    console.log(location)
+    // console.log(location)
 
 
     const getStatus = (status) => {

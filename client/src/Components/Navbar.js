@@ -5,14 +5,18 @@ import logo from '../images/3697355.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { signout } from '../actions/Auth.actions'
 import axios from "axios"
-
+// import { io } from "socket.io-client";
 
 const Navbar = () => {
+
+    // const socket = useRef();
+    // socket.current = io("http://localhost:8000")
 
     const auth = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
     const logout = () => {
+        // socket.current.emit("disconnect");
         dispatch(signout())
     }
     const [cartValue, setCartValue] = useState("");

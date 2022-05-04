@@ -63,7 +63,7 @@ export default (state = initialState, action) => {
             break;
         case orderConstant.ORDERS_BY_ID_FETCHED_FAILURE:
             state = {
-                ...initState
+                ...initialState
             }
             break;
     }

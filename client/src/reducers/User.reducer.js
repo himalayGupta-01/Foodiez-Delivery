@@ -17,6 +17,7 @@ const UserReducer=(state=initState,action)=>{
         case userConstant.USER_REGISTER_SUCCESS:
             state={
                 ...state,
+                error:null,
                 loading:false,
                 message:action.payload.message
             }

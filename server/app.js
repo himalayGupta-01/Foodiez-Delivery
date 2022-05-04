@@ -83,8 +83,13 @@ io.on("connection", (socket) => {
     // 8 our socket joins the private room 
     // *******************
     socket.on("join", (data) => {
+        // clg
         socket.join(data)
     })
+    // socket.on("disconnect", () => {
+    //     console.log("disconnected")
+    //     // socket.
+    // })
 })
 // 9 now whenever orde gets updated it emits an event "orderUpdated" in updatedOrder function in (ordercontroller of admin) we handle that event here
 

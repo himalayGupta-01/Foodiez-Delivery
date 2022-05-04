@@ -32,6 +32,7 @@ export const getOrderById = (id) => {
         dispatch({ type: orderConstant.ORDERS_BY_ID_FETCHED_REQUEST });
 
         const res = await axios.get(`/orders-by-id/${id}`)
+        // console.log(id);
         console.log(res.data);
         if (res.status === 200) {
             const { orders } = res.data
