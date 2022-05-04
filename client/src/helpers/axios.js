@@ -33,6 +33,10 @@ axiosIsntance.interceptors.response.use((res) => {
         localStorage.clear();
         store.dispatch({type:authConstant.LOGOUT_SUCCESS});
     }
+    else{
+        // console.log("Mai chutiya hu ",error.response)
+        return error.response;
+    }
     return Promise.reject(error);
 })
 

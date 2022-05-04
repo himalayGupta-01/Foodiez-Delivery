@@ -27,29 +27,29 @@ const Login = () => {
     // localStorage.setItem("cart", JSON.stringify({items:{}, totalPrice:0, totalQty:0}))
     // console.log(auth)
     // console.log(auth.authenticate)
-    // if (auth.authenticate===true) {
-    //   toast.success("Login successful", {
-    //     position: "top-center",
-    //     autoClose: 5000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //   });
-    //   history.push("/");
-    // }
-    // else {
-    //   toast.error("Invalid Login", {
-    //     position: "top-center",
-    //     autoClose: 5000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //   })
-    // }
+  //   if (auth.authenticate===true) {
+  //     toast.success("Login successful", {
+  //       position: "top-center",
+  //       autoClose: 5000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //     });
+  //     history.push("/");
+  //   }
+  //   else {
+  //     toast.error("Invalid Login", {
+  //       position: "top-center",
+  //       autoClose: 5000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //     })
+  //   }
   }
 
     if (auth.authenticate) {

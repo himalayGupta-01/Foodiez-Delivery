@@ -8,6 +8,7 @@ export const login = (user) => {
         const res = await axios.post('/signin', {
             ...user
         });
+        // console.log(res.status)
 
         if (res.status === 200) {
             const { token, user } = res.data;
@@ -20,7 +21,9 @@ export const login = (user) => {
                 }
             });
         } else {
-            if (res.status >= 400 && res.status<=500) {
+            // console.log("Inside elese")
+            if (res.status >= 400 && res.status <= 500) {
+                // console.log("Inside else if")
                 dispatch({
                     type: authConstant.LOGIN_FAILURE,
                     payload: { error: res.data.error }
@@ -47,7 +50,9 @@ export const signup = (user) => {
                 }
             });
         } else {
-            if (res.status >= 400 && res.status<=500) {
+
+            if (res.status >= 400 && res.status <= 500) {
+
                 dispatch({
                     type: authConstant.LOGIN_FAILURE,
                     payload: { error: res.data.error }
@@ -83,7 +88,7 @@ export const signout = () => {
     return async dispatch => {
 
         dispatch({
-            type:authConstant.LOGOUT_REQUEST
+            type: authConstant.LOGOUT_REQUEST
         })
         const res = await axios.post('/signout');
 
@@ -98,7 +103,7 @@ export const signout = () => {
         else {
             dispatch({
                 type: authConstant.LOGOUT_FAILURE,
-                payload:{error:res.data.error}
+                payload: { error: res.data.error }
             })
         }
 

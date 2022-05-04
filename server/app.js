@@ -52,6 +52,7 @@ app.use(cors({
 }));
 
 // 3 creating eventEmitter object and binding it to app object to use it in updatedOrder function (orderController in admin)
+// ***************
 const eventEmitter=new Emitter();
 app.set("eventEmitter",eventEmitter);
 
@@ -59,6 +60,7 @@ app.set("eventEmitter",eventEmitter);
 const server = http.createServer(app)
 
 //5 configuring socket io options
+//*************** */
 const io = socketIO(server, {
     cors: {
         origin: "http://localhost:3000",
@@ -67,6 +69,7 @@ const io = socketIO(server, {
 })
 
 // 6 whenever connection is established between sockets the connection event is emitted with a socket object so we handle it here 
+// ********************
 io.on("connection", (socket) => {
     //just to get to know that connection is established
     // console.log(`User Connected with Socket Id: ${socket.id}`);
@@ -78,6 +81,7 @@ io.on("connection", (socket) => {
 
     // 7 the page which want to communicate with this send a id to join its personal room saved in data (Client side MyOrders.js emits a join event with id="getUpdatedOrder")
     // 8 our socket joins the private room 
+    // *******************
     socket.on("join", (data) => {
         socket.join(data)
     })
@@ -85,6 +89,7 @@ io.on("connection", (socket) => {
 // 9 now whenever orde gets updated it emits an event "orderUpdated" in updatedOrder function in (ordercontroller of admin) we handle that event here
 
 //10 if an event of type/id "orderUpdated" was occured/emitted then emit a event in the private room using the id sent by the room itself and also send data
+// ***************************
 eventEmitter.on("orderUpdated",()=>{
     // 11 emits a socket event "orderUpdated to private room having id "getUpdatedOrder" 
     io.to("getUpdatedOrder").emit("orderUpdated")
@@ -100,6 +105,7 @@ app.use(require('./routes/admin/auth'));
 app.use(require('./routes/category'));
 app.use(require('./routes/product'));
 app.use(require('./routes/order'), (req, res, next) => {
+    //*********************** */
     req.io = io;
     next();
 });

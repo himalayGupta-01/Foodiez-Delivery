@@ -45,11 +45,12 @@ const Navbar = () => {
                         {auth.authenticate ?
                             <>
                                 <li className=" ml-6">
-                                    <span style={{ cursor: "pointer" }} className="nav-link" onClick={logout}>Signout</span>
-                                </li>
-                                <li className=" ml-6">
                                     <NavLink activeClassName="nav-link active" to="/my-orders">My Orders</NavLink>
                                 </li>
+                                <li className=" ml-6">
+                                    <span style={{ cursor: "pointer" }} className="nav-link" onClick={logout}>Signout</span>
+                                </li>
+
                             </>
                             :
                             <>

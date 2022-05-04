@@ -11,6 +11,7 @@ import "./style.css";
 
 const Orders = () => {
     const [orderStatus, setOrderStatus] = useState("")
+    const [tempStatus, setTempStatus] = useState("")
     const [currentOrder, setCurrentOrder] = useState({})
     const [showUpdateOrderModal, setShowUpdateOrderModal] = useState(false);
 
@@ -82,6 +83,7 @@ const Orders = () => {
     const handleShowUpdateOrderModal = (ord) => {
         setCurrentOrder(ord);
         setOrderStatus(ord.status)
+        setTempStatus(ord.status)
         setShowUpdateOrderModal(true);
     }
     const handleClose = () => {
@@ -142,11 +144,11 @@ const Orders = () => {
                     <div>
                         <h5>Update Status</h5>
                         <select
-                            disabled={orderStatus === "Delivered" ? true : false}
+                            disabled={orderStatus === "Delivered" || orderStatus === "Order Cancelled"  ? true : false}
                             className="form-control form-select"
-                            value={orderStatus}
+                            value={tempStatus}
                             onChange={(e) => {
-                                setOrderStatus(e.target.value)
+                                setTempStatus(e.target.value)
                             }}
                         >
                             <option key="Order Placed" value="Order Placed">Order Placed</option>
@@ -154,6 +156,7 @@ const Orders = () => {
                             <option key="Being Cooked" value="Being Cooked">Being Cooked</option>
                             <option key="Out For Delivery" value="Out For Delivery">Out for Delivery</option>
                             <option key="Delivered" value="Delivered">Delivered</option>
+                            <option key="Order Cancelled" value="Order Cancelled">Order Cancelled</option>
 
                         </select>
                     </div>
@@ -187,7 +190,7 @@ const Orders = () => {
 
     const update = () => {
 
-        dispatch(updateOrder(idToOperate, orderStatus));
+        dispatch(updateOrder(idToOperate, tempStatus));
         dispatch(getInitialData());
         setShowUpdateOrderModal(false);
     }
@@ -197,7 +200,7 @@ const Orders = () => {
             <Container>
                 <Row>
                     <Col md={12}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop:"25px" }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: "25px" }}>
                             <h3>Orders</h3>
                             <button className="syncBtn" onClick={() => { dispatch(getInitialData()) }} ><FaSyncAlt /></button>
                         </div>

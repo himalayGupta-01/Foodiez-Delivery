@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { NavLink, useHistory, Redirect } from 'react-router-dom';
 import { FaUserAlt, FaEnvelope, FaPhoneAlt, FaUnlockAlt } from 'react-icons/fa';
 import signUpPic from "../images/signup.png";
@@ -30,36 +30,45 @@ const SignUp = () => {
         setUser({ ...user, [name]: value });
     };
 
-    const PostData = (e) => {
+    const PostData = async (e) => {
         e.preventDefault();
-        dispatch(signup(user))
-        if (userState.message!="User registered successfully") {
-                    toast.error("Invalid Registration", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                }
-                else {
-                    toast.success("Registration sucessful", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+        // console.log("Before ",userState)
+        await dispatch(signup(user));
+        // console.log("After",userState);
+
+        // if (userState.message!="User registered successfully") {
+        // //             toast.error("Invalid Registration", {
+        // //                 position: "top-center",
+        // //                 autoClose: 5000,
+        // //                 hideProgressBar: false,
+        // //                 closeOnClick: true,
+        // //                 pauseOnHover: true,
+        // //                 draggable: true,
+        // //                 progress: undefined,
+        // //             });
+        // //         }
+        // //         else {
+        // //             toast.success("Registration sucessful", {
+        // //                 position: "top-center",
+        // //                 autoClose: 5000,
+        // //                 hideProgressBar: false,
+        // //                 closeOnClick: true,
+        // //                 pauseOnHover: true,
+        // //                 draggable: true,
+        // //                 progress: undefined,
+        // //             });
         
-                    history.push("/signin");
-                }
+        //             history.push("/signin");
+        //         }
 
         
     }
+
+    // useEffect(() => {
+    //     if (userState.message=="User registered successfully") {
+    //         history.push("/signin")
+    //     }
+    // }, [userState]);
 
     if (auth.authenticate) {
         return <Redirect to="/" />

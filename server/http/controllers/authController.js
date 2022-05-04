@@ -57,14 +57,14 @@ function authController(){
         
                     if(!isMatch){
                         console.log("not match");
-                        res.status(401).json({error:"Invaid Credentials"})
+                        return res.status(401).json({error:"Invaid Credentials"})
                     }else{
-                        res.status(200).json({token:token,user:userLogin,message:'Login Successfull'})
+                        return res.status(200).json({token:token,user:userLogin,message:'Login Successfull'})
                     }
                 }
                 else{
                     console.log("invalid cred match");
-                    res.status(401).json({error:"Invaid Credentials"})
+                   return res.status(401).json({error:"Invaid Credentials"})
                 }
         
             } catch (error) {

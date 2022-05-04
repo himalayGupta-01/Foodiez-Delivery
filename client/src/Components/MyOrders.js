@@ -14,6 +14,7 @@ import { io } from "socket.io-client";
 const MyOrders = (props) => {
 
     //using Ref
+    //***********************888**8 */
     const socket = useRef();
 
     const order = useSelector(state => state.order)
@@ -22,22 +23,28 @@ const MyOrders = (props) => {
     const [showDetails, setShowDetails] = useState(false);
     const dispatch = useDispatch();
 
+    // ************************
     socket.current = io("http://localhost:8000")
 
     useEffect(async () => {
 
         // socket.current.on("connection", () => {
         //     console.log("connected to server")
-        // })    
+        // })  
+        //******************* */  
+        socket.current.emit("join", "getUpdatedOrder");
+
+        //emit join event to socket using id as getUpdatedOrder
+        //if an event of type "orderUpdated" emits then do what
+        // ************************
+        socket.current.on("orderUpdated", () => {
+            dispatch(getOrderById(auth.user._id));
+        })
         dispatch(getOrderById(auth.user._id));
     }, [])
 
-    //emit join event to socket using id as getUpdatedOrder
-    socket.current.emit("join", "getUpdatedOrder")
-    //if an event of type "orderUpdated" emits then do what
-    socket.current.on("orderUpdated", () => {
-        dispatch(getOrderById(auth.user._id));
-    })
+
+
 
     let location = useLocation()
     console.log(location)
@@ -45,22 +52,27 @@ const MyOrders = (props) => {
 
     const getStatus = (status) => {
         let myWidth = "10%";
-        let myColor = "yellow";
+        let myColor = "#FCB711";
+
         if (status === "Order Confirmed") {
             myWidth = "25%";
-            myColor = "#FE5F1E"
+            myColor = "#F37021"
         }
         if (status === "Being Cooked") {
             myWidth = "50%";
-            myColor = "red"
+            myColor = "#6460AA"
         }
         else if (status === "Out For Delivery") {
             myWidth = "75%";
-            myColor = "blue";
+            myColor = "#0089D0";
         }
         else if (status === "Delivered") {
             myWidth = "100%";
-            myColor = "green";
+            myColor = "#0DD14B";
+        }
+        if (status === "Order Cancelled") {
+            myWidth = "100%";
+            myColor = "#D50F25"
         }
         return <td style={{ width: "15%" }}>
             <div style={{ width: "100%", borderRadius: "30px", border: "1px solid black" }}>
@@ -149,7 +161,6 @@ const MyOrders = (props) => {
                         </div>
                     </Col>
                 </Row>
-
             </NewModal>
 
         )
@@ -203,7 +214,13 @@ const MyOrders = (props) => {
                                             order.orders.length > 0 ?
                                                 order.orders.map((order, index) => {
                                                     return <>
-                                                        <tr key={order._id}>
+                                                        <tr
+
+                                                            style={{
+                                                                textDecoration: order.status == "Order Cancelled" ? "line-through" : "none",
+                                                                textDecorationThickness: order.status == "Order Cancelled" ? "10%" : "auto"
+                                                            }}
+                                                            key={order._id}>
                                                             <td>{`${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[1]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[0]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[2]}`}</td>
                                                             <td>{new Date((order.createdAt).toString()).toLocaleTimeString()}</td>
 
@@ -219,6 +236,16 @@ const MyOrders = (props) => {
                                                                 justifyContent: "space-around",
                                                                 // flexDirection: "column"
                                                             }}>
+
+                                                                {/* <button
+                                                                    className="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                                    // type="button"
+                                                                    onClick={() => handleShowOrderDetails(order)}
+                                                                >
+                                                                    Open large modal
+                                                                </button> */}
+
+
                                                                 <Button variant="outline-primary" onClick={() => {
                                                                     handleShowOrderDetails(order)
                                                                 }}>Details</Button>

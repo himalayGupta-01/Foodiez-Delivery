@@ -12,7 +12,9 @@ const orderSchema= new mongoose.Schema({
     },
     phone:{
         type:String,
-        required:true
+        required:true,
+        min : 1000000000,
+        max : 9999999999
     },
     address:{
         type:String,
