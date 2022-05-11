@@ -1,34 +1,36 @@
 import { userConstant } from "../actions/Constants"
 
-const initState={
-    error:null,
-    message:"",
-    loading:false
+const initState = {
+    error: "",
+    message: "",
+    loading: false
 }
 
-const UserReducer=(state=initState,action)=>{
-    switch(action.type){
+const UserReducer = (state = initState, action) => {
+    switch (action.type) {
         case userConstant.USER_REGISTER_REQUEST:
-            state={
+            state = {
                 ...state,
-                loading:true
+                loading: true
             }
             break;
         case userConstant.USER_REGISTER_SUCCESS:
-            state={
+            state = {
                 ...state,
-                error:null,
-                loading:false,
-                message:action.payload.message
+                error: null,
+                loading: false,
+                message: action.payload.message
             }
             break;
         case userConstant.USER_REGISTER_FAILURE:
-            state={
+            state = {
                 ...state,
-                loading:false,
-                error:action.payload.error
+                loading: false,
+                error: action.payload.error
             }
             break;
+            
+        default: break;
     }
     return state;
 }

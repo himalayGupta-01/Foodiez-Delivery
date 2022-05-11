@@ -21,9 +21,7 @@ export const login = (user) => {
                 }
             });
         } else {
-            // console.log("Inside elese")
             if (res.status >= 400 && res.status <= 500) {
-                // console.log("Inside else if")
                 dispatch({
                     type: authConstant.LOGIN_FAILURE,
                     payload: { error: res.data.error }
@@ -52,7 +50,6 @@ export const signup = (user) => {
         } else {
 
             if (res.status >= 400 && res.status <= 500) {
-
                 dispatch({
                     type: authConstant.LOGIN_FAILURE,
                     payload: { error: res.data.error }

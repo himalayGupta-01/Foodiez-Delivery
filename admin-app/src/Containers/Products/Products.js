@@ -28,7 +28,7 @@ const Products = (props) => {
     const [showDeleteProductModal, setShowDeleteProductModal] = useState(false);
 
 
-    const auth = useSelector(state => state.auth)
+    // const auth = useSelector(state => state.auth)
     const category = useSelector(state => state.category)
     const product = useSelector(state => state.product)
 
@@ -266,7 +266,7 @@ const Products = (props) => {
                         <label className="key">Product Picture</label>
                         <div style={{ display: "flex" }}>
                             <div className="productImgContainer">
-                                <img src={generatePublicUrl(productDetails.productPicture)} />
+                                <img src={generatePublicUrl(productDetails.productPicture)} alt="productImage" />
                             </div>
                         </div>
                     </Col>
@@ -376,12 +376,12 @@ const Products = (props) => {
                     <Col>
                             <br />
                         {
-                            productPicture != "" ?
+                            productPicture !== "" ?
                                 <div style={{ display: "flex", flexDirection: "column" }}>
                                     <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                                         <label>Current Product Picture </label>
                                         <div className="productImgContainer">
-                                            <img src={generatePublicUrl(productPicture)} />
+                                            <img src={generatePublicUrl(productPicture)} alt="productImage"/>
                                         </div>
                                     </div>
                                     
@@ -458,7 +458,7 @@ const Products = (props) => {
                         <label className="key">Product Picture</label>
                         <div style={{ display: "flex" }}>
                             <div className="productImgContainer">
-                                <img src={generatePublicUrl(productDetails.productPicture)} />
+                                <img src={generatePublicUrl(productDetails.productPicture)} alt="productImage" />
                             </div>
                         </div>
                     </Col>

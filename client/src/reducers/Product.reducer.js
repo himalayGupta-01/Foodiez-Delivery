@@ -6,7 +6,7 @@ const initialState = {
     products: []
 }
 
-export default (state = initialState, action) => {
+const productReducer=(state = initialState, action) => {
     switch (action.type) {
         case productConstant.GET_ALL_PRODUCTS_SUCCESS:
             state = {
@@ -14,9 +14,12 @@ export default (state = initialState, action) => {
                 products: action.payload.products
             }
             break;
+            default: break;
     }
     return state;
 }
+
+export default productReducer;
 
 
 

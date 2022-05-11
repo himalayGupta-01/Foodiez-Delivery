@@ -23,7 +23,7 @@ function App(props) {
       dispatch(isUserLoggedIn());
     }
     dispatch(getInitialData());
-  }, [])
+  }, [dispatch,auth.authenticate])
 
 
   return (

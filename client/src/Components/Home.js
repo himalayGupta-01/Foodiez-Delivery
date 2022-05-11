@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios'
 import heroPic from "../images/food4.jpg"
-import heroPic2 from "../images/pizza.png"
-import { ToastContainer, toast } from 'react-toastify';
+// import heroPic2 from "../images/pizza.png"
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { useDispatch, useSelector } from "react-redux"
 import { getAllCategory, getAllProducts } from "../actions/Action"
 import { generatePublicUrl } from '../urlConfig';
-import { updateCart } from '../actions/Cart.actions';
-import {getOrderById } from '../actions/Order.actions';
+// import { updateCart } from '../actions/Cart.actions';
+// import { getOrderById } from '../actions/Order.actions';
 
 
 
@@ -17,8 +17,9 @@ const Home = () => {
     //done by me
     const categoryState = useSelector(state => state.category);
     const productState = useSelector(state => state.product)
-    const auth = useSelector(state => state.auth)
+    // const auth = useSelector(state => state.auth)
     const dispatch = useDispatch();
+    let cartCounter = document.querySelector('#cartCounter')
 
     const getProductByCategoryId = (categoryId) => {
         let prod = [];
@@ -46,11 +47,11 @@ const Home = () => {
         return finalData;
     }
 
-    useEffect(async () => {
+    useEffect(() => {
         dispatch(getAllCategory());
         dispatch(getAllProducts());
         // dispatch(getOrderById(auth.user._id));
-    }, [])
+    }, [dispatch])
 
 
 

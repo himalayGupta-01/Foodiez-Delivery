@@ -52,7 +52,7 @@ const showProducts = (products, product, categories) => {
     return newProducts;
 }
 
-export default (state = initialState, action) => {
+const productReducer = (state = initialState, action) => {
     switch (action.type) {
         case productConstant.GET_ALL_PRODUCTS_SUCCESS:
             state = {
@@ -81,7 +81,7 @@ export default (state = initialState, action) => {
                 ...initialState
             }
             break;
-            case productConstant.UPDATE_PRODUCT_REQUEST:
+        case productConstant.UPDATE_PRODUCT_REQUEST:
             state = {
                 ...state,
                 loading: true
@@ -97,7 +97,7 @@ export default (state = initialState, action) => {
             break;
         case productConstant.UPDATE_PRODUCT_FAILURE:
             state = {
-                ...initState
+                ...initialState
             }
             break;
         case productConstant.DELETE_PRODUCT_REQUEST:
@@ -116,9 +116,12 @@ export default (state = initialState, action) => {
             break;
         case productConstant.DELETE_PRODUCT_FAILURE:
             state = {
-                ...initState
+                ...initialState
             }
             break;
+        default: break;
     }
     return state;
 }
+
+export default productReducer;

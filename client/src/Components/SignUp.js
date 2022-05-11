@@ -1,23 +1,20 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useHistory, Redirect } from 'react-router-dom';
 import { FaUserAlt, FaEnvelope, FaPhoneAlt, FaUnlockAlt } from 'react-icons/fa';
 import signUpPic from "../images/signup.png";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { signup } from '../actions/User.actions'
 
-
-
-
 const SignUp = () => {
 
     const auth = useSelector(state => state.auth);
+    const userStore = useSelector(state => state.user);
+    const [error, setError] = useState(null);
     const userState = useSelector(state => state.user);
 
-    const dispatch=useDispatch()
-
-    const history = useHistory();
+    const dispatch = useDispatch()
 
     const [user, setUser] = useState({
         name: "", email: "", phone: "", password: "", cpassword: ""
@@ -32,43 +29,20 @@ const SignUp = () => {
 
     const PostData = async (e) => {
         e.preventDefault();
-        // console.log("Before ",userState)
         await dispatch(signup(user));
-        // console.log("After",userState);
-
-        // if (userState.message!="User registered successfully") {
-        // //             toast.error("Invalid Registration", {
-        // //                 position: "top-center",
-        // //                 autoClose: 5000,
-        // //                 hideProgressBar: false,
-        // //                 closeOnClick: true,
-        // //                 pauseOnHover: true,
-        // //                 draggable: true,
-        // //                 progress: undefined,
-        // //             });
-        // //         }
-        // //         else {
-        // //             toast.success("Registration sucessful", {
-        // //                 position: "top-center",
-        // //                 autoClose: 5000,
-        // //                 hideProgressBar: false,
-        // //                 closeOnClick: true,
-        // //                 pauseOnHover: true,
-        // //                 draggable: true,
-        // //                 progress: undefined,
-        // //             });
-        
-        //             history.push("/signin");
-        //         }
-
-        
+        if (userStore.error)
+            await setError({
+                type:userStore.error.split("**")[0],
+                value:userStore.error.split("**")[1]
+            })
     }
 
+    const history = useHistory();
     useEffect(() => {
-        if (userState.message=="User registered successfully") {
+        if (userState.message === "User registered successfully") {
             history.push("/signin")
         }
-    }, [userState]);
+    }, [userState, history]);
 
     if (auth.authenticate) {
         return <Redirect to="/" />
@@ -119,11 +93,15 @@ const SignUp = () => {
                             </div>
 
 
-                            <div className="mb-4">
+                            <div className="mb-1">
                                 <label className=" text-gray-700 text-sm font-bold mb-2 flex" htmlFor="password">
                                     <FaUnlockAlt /> <span className=" px-3">Confirm Password</span>
                                 </label>
                                 <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" name="cpassword" id="cpassword" type="password" value={user.cpassword} onChange={handelInput} placeholder="**********" />
+                            </div>
+
+                            <div className="anyError mb-6">
+                                {error.type}
                             </div>
 
 

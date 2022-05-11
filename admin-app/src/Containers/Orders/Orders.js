@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../../Components/Layout/Layout';
 import { getInitialData } from '../../actions/initialData.action';
 import NewModal from "../../Components/UI/Modal/NewModal";
-import { generatePublicUrl } from '../../urlConfig';
+// import { generatePublicUrl } from '../../urlConfig';
 import { updateOrder } from "../../actions/Order.actions"
 import { FaSyncAlt } from 'react-icons/fa';
 import "./style.css";
@@ -94,8 +94,8 @@ const Orders = () => {
 
         let totalCart = []
 
-        Object.entries(currentOrder.items.items).map(item => {
-            Object.entries(item[1]).map(itemValue => {
+        Object.entries(currentOrder.items.items).forEach(item => {
+            Object.entries(item[1]).forEach(itemValue => {
                 if (itemValue[0] === "item") {
                     totalCart.push({
                         item: {

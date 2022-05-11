@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { NavLink, Redirect } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { FaShoppingCart } from 'react-icons/fa';
 import logo from '../images/3697355.png'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,6 +12,8 @@ const Navbar = () => {
     // const socket = useRef();
     // socket.current = io("http://localhost:8000")
 
+    
+
     const auth = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
@@ -20,7 +22,7 @@ const Navbar = () => {
         dispatch(signout())
     }
     const [cartValue, setCartValue] = useState("");
-    let cartCounter = document.querySelector('#cartCounter')
+    // let cartCounter = document.querySelector('#cartCounter')
 
     useEffect(() => {
         axios.get('/cart').then(async res => {
@@ -68,7 +70,7 @@ const Navbar = () => {
                         }
 
                         <li className=" ml-6 ">
-                            <NavLink className="nav-link px-4 py-2 rounded-full flex items-center " id='cart-icon' to="/cart"><span id='cartCounter'>{cartValue == 0 ? "" : cartValue}</span><FaShoppingCart /></NavLink>
+                            <NavLink className="nav-link px-4 py-2 rounded-full flex items-center " id='cart-icon' to="/cart"><span id='cartCounter'>{cartValue === 0 ? "" : cartValue}</span><FaShoppingCart /></NavLink>
                         </li>
                     </ul>
                 </div>

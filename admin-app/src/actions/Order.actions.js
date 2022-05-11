@@ -34,7 +34,7 @@ export const updateOrder=(id,status)=>{
         console.log(res.data);
         if (res.status === 200) {
 
-            const { order } = res.data
+            // const { order } = res.data
 
             dispatch({
                 type: orderConstant.UPDATE_ORDER_SUCCESS,

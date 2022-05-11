@@ -23,7 +23,7 @@ const showOrders = (orders, order) => {
     return newOrders;
 }
 
-export default (state = initialState, action) => {
+const orderReducer=(state = initialState, action) => {
     switch (action.type) {
 
         case orderConstant.ORDER_PLACED_REQUEST:
@@ -52,7 +52,7 @@ export default (state = initialState, action) => {
                 loading: true
             }
             break;
-            x
+            
         case orderConstant.ORDERS_BY_ID_FETCHED_SUCCESS:
             state = {
                 ...state,
@@ -66,6 +66,9 @@ export default (state = initialState, action) => {
                 ...initialState
             }
             break;
+            default: break;
     }
     return state;
 }
+
+export default orderReducer;

@@ -1,115 +1,121 @@
 import React, { useState } from 'react'
-import { NavLink, useHistory } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { FaUserAlt, FaUnlockAlt } from 'react-icons/fa';
 import signInPic from '../images/login.png'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { login } from '../actions/Action'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import {getOrderById } from '../actions/Order.actions';
+// import {getOrderById } from '../actions/Order.actions';
 
 
 const Login = () => {
 
-  const history = useHistory();
+  // const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const auth = useSelector(state => state.auth)
+  const [error, setError] = useState("");
   const dispatch = useDispatch()
 
-  const loginUSer =async (e) => {
+  const loginUSer = async (e) => {
     e.preventDefault();
     const user = {
       email, password
     }
     await dispatch(login(user));
+    if (auth.error)
+      setError(auth.error)
     // localStorage.setItem("cart", JSON.stringify({items:{}, totalPrice:0, totalQty:0}))
     // console.log(auth)
     // console.log(auth.authenticate)
-  //   if (auth.authenticate===true) {
-  //     toast.success("Login successful", {
-  //       position: "top-center",
-  //       autoClose: 5000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //     });
-  //     history.push("/");
-  //   }
-  //   else {
-  //     toast.error("Invalid Login", {
-  //       position: "top-center",
-  //       autoClose: 5000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //     })
-  //   }
+    //   if (auth.authenticate===true) {
+    //     toast.success("Login successful", {
+    //       position: "top-center",
+    //       autoClose: 5000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //     });
+    //     history.push("/");
+    //   }
+    //   else {
+    //     toast.error("Invalid Login", {
+    //       position: "top-center",
+    //       autoClose: 5000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //     })
+    //   }
   }
 
-    if (auth.authenticate) {
-      // dispatch(getOrderById(auth.user._id));
-      return <Redirect to="/" />
-    }
+  if (auth.authenticate) {
+    // dispatch(getOrderById(auth.user._id));
+    return <Redirect to="/" />
+  }
 
-    return (
-      <>
-        <section className="login py-5">
-          <div className="shadow-2xl container mx-auto flex justify-center items-center">
-            <div className="left max-w-xs w-1/2">
+  return (
+    <>
+      <section className="login py-5">
+        <div className="shadow-2xl container mx-auto flex justify-center items-center">
+          <div className="left max-w-xs w-1/2">
 
-              <form method="POST" className="bg-white shadow-md rounded px-6 pt-6 pb-8 mb-4">
+            <form method="POST" className="bg-white shadow-md rounded px-6 pt-6 pb-8 mb-4">
 
-                <div className="mb-4">
-                  <label className=" text-gray-700 text-sm font-bold mb-2 flex" htmlFor="email">
-                    <FaUserAlt /> <span className=" px-3">Email</span>
-                  </label>
-                  <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="email" id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" />
-                </div>
-
-
-                <div className="mb-6">
-                  <label className=" text-gray-700 text-sm font-bold mb-2 flex" htmlFor="password">
-                    <FaUnlockAlt /> <span className=" px-3">Password</span>
-                  </label>
-                  <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" name="password" id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="**********" />
-                </div>
+              <div className="mb-4">
+                <label className=" text-gray-700 text-sm font-bold mb-2 flex" htmlFor="email">
+                  <FaUserAlt /> <span className=" px-3">Email</span>
+                </label>
+                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="email" id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" />
+              </div>
 
 
-                <div className="flex items-center justify-between">
-                  <button className=" btn-primary rounded-full text-white font-bold py-2 px-4  focus:outline-none focus:shadow-outline" type="button" onClick={loginUSer}>
-                    Sign In
-                  </button>
-                  <ToastContainer />
-                  <NavLink className="inline-block align-baseline font-bold text-sm " to="/signup">
-                    Don't have account?
-                  </NavLink>
-                </div>
+              <div className="mb-1">
+                <label className=" text-gray-700 text-sm font-bold mb-2 flex" htmlFor="password">
+                  <FaUnlockAlt /> <span className=" px-3">Password</span>
+                </label>
+                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" name="password" id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="**********" />
+              </div>
+
+              <div className="anyError mb-6">
+                {error}
+              </div>
+
+              <div className="flex items-center justify-between">
+                <button className=" btn-primary rounded-full text-white font-bold py-2 px-4  focus:outline-none focus:shadow-outline" type="button" onClick={loginUSer}>
+                  Sign In
+                </button>
+                <ToastContainer />
+                <NavLink className="inline-block align-baseline font-bold text-sm " to="/signup">
+                  Don't have account?
+                </NavLink>
+              </div>
 
 
-              </form>
+            </form>
 
-              <p className="text-center text-gray-500 text-xs">
-                &copy;2021 Foodiez Delivery All rights reserved.
-              </p>
-
-            </div>
-
-            <div className="right max-w-xl signInPic w-1/2">
-              <figure>
-                <img className="px-6" src={signInPic} alt="Login Pic" />
-              </figure>
-            </div>
+            <p className="text-center text-gray-500 text-xs">
+              &copy;2021 Foodiez Delivery All rights reserved.
+            </p>
 
           </div>
-        </section>
-      </>
-    )
-  }
 
-  export default Login
+          <div className="right max-w-xl signInPic w-1/2">
+            <figure>
+              <img className="px-6" src={signInPic} alt="Login Pic" />
+            </figure>
+          </div>
+
+        </div>
+      </section>
+    </>
+  )
+}
+
+export default Login

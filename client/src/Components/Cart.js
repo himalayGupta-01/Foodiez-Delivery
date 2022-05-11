@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { NavLink, Redirect } from 'react-router-dom'
+import React, { useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import { FaPlus, FaMinus, FaTrashAlt } from 'react-icons/fa';
 import EmptyCart from "../images/empty-cart.png"
 import CartIcon from "../images/cart-black.png"
@@ -11,7 +11,7 @@ import { takeOrder } from '../actions/Order.actions';
 const Cart = () => {
 
     const auth = useSelector(state => state.auth)
-    const order = useSelector(state => state.order)
+    // const order = useSelector(state => state.order)
 
     const dispatch = useDispatch();
 
@@ -21,6 +21,7 @@ const Cart = () => {
     })
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("")
+    let cartCounter = document.querySelector('#cartCounter')
 
     //incrementing value of a item in cart
     const increment = (item) => {
@@ -30,7 +31,7 @@ const Cart = () => {
             setCart({
                 ...JSON.parse(localStorage.getItem("cart"))
             })
-            cartCounter.innerText = res.data.totalQty == 0 ? "" : res.data.totalQty;
+            cartCounter.innerText = res.data.totalQty === 0 ? "" : res.data.totalQty;
         })
     }
 
@@ -42,7 +43,7 @@ const Cart = () => {
             setCart({
                 ...JSON.parse(localStorage.getItem("cart"))
             })
-            cartCounter.innerText = res.data.totalQty == 0 ? "" : res.data.totalQty;
+            cartCounter.innerText = res.data.totalQty === 0 ? "" : res.data.totalQty;
         })
     }
 
@@ -54,7 +55,7 @@ const Cart = () => {
             setCart({
                 ...JSON.parse(localStorage.getItem("cart"))
             })
-            cartCounter.innerText = res.data.totalQty == 0 ? "" : res.data.totalQty;
+            cartCounter.innerText = res.data.totalQty === 0 ? "" : res.data.totalQty;
         })
     }
 
@@ -86,8 +87,8 @@ const Cart = () => {
 
         let totalCart = []
 
-        Object.entries(cart.items).map(item => {
-            Object.entries(item[1]).map(itemValue => {
+        Object.entries(cart.items).forEach(item => {
+            Object.entries(item[1]).forEach(itemValue => {
                 if (itemValue[0] === "item") {
                     totalCart.push({
                         item: {
@@ -131,7 +132,7 @@ const Cart = () => {
         <>
             <section className="cart py-16">
 
-                {cart.items && cart.totalQty != 0 ? <>
+                {cart.items && cart.totalQty !== 0 ? <>
                     <div className=" order container mx-auto w-1/2">
                         <div className="flex items-center border-b border-gray-300 pb-4">
                             <img src={CartIcon} alt="cart-icon" />

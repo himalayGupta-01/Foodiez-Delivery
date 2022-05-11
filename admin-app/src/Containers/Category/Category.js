@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllCategory, addCategory, deleteCategory, updateCategory } from '../../actions/Action'

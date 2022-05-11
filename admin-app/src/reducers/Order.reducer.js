@@ -7,7 +7,7 @@ const initialState = {
     error: null
 }
 
-export default (state = initialState, action) => {
+const orderReducer = (state = initialState, action) => {
     switch (action.type) {
 
         case orderConstant.ORDERS_FETCHED_REQUEST:
@@ -49,6 +49,8 @@ export default (state = initialState, action) => {
                 ...initialState
             }
             break;
+        default: break;
     }
     return state;
 }
+export default orderReducer;

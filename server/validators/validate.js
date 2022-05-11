@@ -1,11 +1,11 @@
 const { check,validationResult }= require('express-validator');
 
 exports.validateSignUpRequest=[
-    check('name').notEmpty().withMessage('Name is required'),
-    check('name').isLength({min:2}).withMessage('Name must be atleast 2 character long'),
+    check('name').notEmpty().withMessage('Name**Name is required'),
+    check('name').isLength({min:2}).withMessage('Name**Name must be atleast 2 character long'),
     
-    check('email').notEmpty().withMessage('Email is required'),
-    check('email').isEmail().withMessage('Valid Email is required'),
+    check('email').notEmpty().withMessage('Email**Email is required'),
+    check('email').isEmail().withMessage('Email**Valid Email is required'),
     
     check('phone').notEmpty().withMessage('Phone number is required'),
     check('phone').isNumeric().withMessage('Valid Phone number is required'),

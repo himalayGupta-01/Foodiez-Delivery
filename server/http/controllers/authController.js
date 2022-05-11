@@ -8,7 +8,7 @@ function authController(){
             const{name ,email,phone,password,cpassword}= req.body;
 
             if(!name || !email|| !phone|| !password|| !cpassword){
-                return res.status(400).json({error:"plz fill fields properly"})
+                return res.status(400).json({error:"Please Fill Fields Properly"})
             }
 
             try {

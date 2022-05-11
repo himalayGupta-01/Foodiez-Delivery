@@ -1,4 +1,4 @@
-import React, { useEffect,useRef } from "react";
+import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom"
 import "./App.css";
 import Navbar from './Components/Navbar';
@@ -14,7 +14,7 @@ import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from 'react-redux'
 import { isUserLoggedIn } from './actions/Auth.actions'
-import { getInitialData } from './actions/Action'
+// import { getInitialData } from './actions/Action'
 // import {io} from "socket.io-client";
 
 
@@ -40,7 +40,7 @@ function App() {
       dispatch(isUserLoggedIn());
     }
     // dispatch(getInitialData());
-  }, [])
+  }, [auth.authenticate, dispatch])
 
   
 

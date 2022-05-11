@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaSyncAlt } from 'react-icons/fa'
 import { useSelector, useDispatch } from "react-redux"
 import { Col, Container, Row, Table, Button } from 'react-bootstrap';
@@ -46,7 +46,7 @@ const MyOrders = (props) => {
         dispatch(getOrderById(auth.user._id));
         // return socket.disconnect()
         // return socket.current.disconnect()
-    }, [])
+    }, [auth.user._id,dispatch])
 
 
 
@@ -102,8 +102,8 @@ const MyOrders = (props) => {
 
         let totalCart = []
 
-        Object.entries(currentOrder.items.items).map(item => {
-            Object.entries(item[1]).map(itemValue => {
+        Object.entries(currentOrder.items.items).map(item => 
+            Object.entries(item[1]).forEach(itemValue => {
                 if (itemValue[0] === "item") {
                     totalCart.push({
                         item: {
@@ -113,7 +113,7 @@ const MyOrders = (props) => {
                     })
                 }
             })
-        })
+        )
 
         return (<>
             {totalCart.map(val =>
@@ -221,8 +221,8 @@ const MyOrders = (props) => {
                                                         <tr
 
                                                             style={{
-                                                                textDecoration: order.status == "Order Cancelled" ? "line-through" : "none",
-                                                                textDecorationThickness: order.status == "Order Cancelled" ? "10%" : "auto"
+                                                                textDecoration: order.status === "Order Cancelled" ? "line-through" : "none",
+                                                                textDecorationThickness: order.status === "Order Cancelled" ? "10%" : "auto"
                                                             }}
                                                             key={order._id}>
                                                             <td>{`${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[1]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[0]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[2]}`}</td>
