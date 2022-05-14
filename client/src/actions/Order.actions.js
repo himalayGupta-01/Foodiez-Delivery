@@ -7,8 +7,8 @@ export const takeOrder = (item) => {
 
         dispatch({ type: orderConstant.ORDER_PLACED_REQUEST });
 
-        const res = await axios.post('/add-order', { item });
-        console.log(res.data);
+        const res = await axios.post('/add-order', { ...item });
+        // console.log(item);
         if(res.status===201){
 
             const {order }=res.data
@@ -32,8 +32,7 @@ export const getOrderById = (id) => {
         dispatch({ type: orderConstant.ORDERS_BY_ID_FETCHED_REQUEST });
 
         const res = await axios.get(`/orders-by-id/${id}`)
-        // console.log(id);
-        console.log(res.data);
+        // console.log(res)
         if (res.status === 200) {
             const { orders } = res.data
 

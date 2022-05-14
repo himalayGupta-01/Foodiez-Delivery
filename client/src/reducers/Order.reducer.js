@@ -6,22 +6,23 @@ import { orderConstant } from "../actions/Constants";
 const initialState = {
     orders: [],
     loading: false,
-    error: null
+    error: null,
+    message:""
 }
 
-const showOrders = (orders, order) => {
-    let newOrders = [];
-    newOrders.push({
-        ...order
-    });
-    for (let ord of orders) {
-        newOrders.push({
-            ...ord
-        })
-    }
+// const showOrders = (orders, order) => {
+//     let newOrders = [];
+//     newOrders.push({
+//         ...order
+//     });
+//     for (let ord of orders) {
+//         newOrders.push({
+//             ...ord
+//         })
+//     }
     
-    return newOrders;
-}
+//     return newOrders;
+// }
 
 const orderReducer=(state = initialState, action) => {
     switch (action.type) {
@@ -29,27 +30,32 @@ const orderReducer=(state = initialState, action) => {
         case orderConstant.ORDER_PLACED_REQUEST:
             state = {
                 ...state,
-                loading: true
+                loading: true,
+                error:null,
+                message:""
             }
             break;
         case orderConstant.ORDER_PLACED_SUCCESS:
             state = {
                 ...state,
-                orders:showOrders(state.orders, action.payload.order),
-                loading: false
-
+                // orders:showOrders(state.orders, action.payload.order),
+                loading: false,
+                error:null,
+                message:"Order Placed SuccessFully"
             }
             break;
         case orderConstant.ORDER_PLACED_FAILURE:
             state = {
-                ...initialState
+                ...initialState,
+                error:action.payload.error
             }
             break;
 
         case orderConstant.ORDERS_BY_ID_FETCHED_REQUEST:
             state = {
                 ...state,
-                loading: true
+                loading: true,
+                message:""
             }
             break;
             
@@ -57,13 +63,14 @@ const orderReducer=(state = initialState, action) => {
             state = {
                 ...state,
                 orders: action.payload.orders,
-                loading: false
+                loading: false,
 
             }
             break;
         case orderConstant.ORDERS_BY_ID_FETCHED_FAILURE:
             state = {
-                ...initialState
+                ...initialState,
+                error:action.payload.error
             }
             break;
             default: break;

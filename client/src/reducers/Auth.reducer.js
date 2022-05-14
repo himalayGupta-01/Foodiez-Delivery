@@ -15,7 +15,7 @@ const initState = {
 
 const AuthReducer = (state = initState, action) => {
 
-    console.log(action);
+    // console.log(action);
 
     switch (action.type) {
         case authConstant.LOGIN_REQUEST:
@@ -39,7 +39,6 @@ const AuthReducer = (state = initState, action) => {
             state = {
                 ...initState,
                 error:action.payload.error
-                // loading: true
             }
             break;
         case authConstant.LOGOUT_REQUEST:

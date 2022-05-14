@@ -66,17 +66,10 @@ const Contact = () => {
                                 <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="email" id="email" type="email" placeholder="Enter your email" />
                             </div>
 
-
-                            {/* <div className="mb-6">
-                                <label className=" text-gray-700 text-sm font-bold mb-2 flex" htmlFor="password"><span className=" px-3">Password</span>
-                                </label>
-                                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" name="password" id="password" type="password" placeholder="**********" />
-                            </div> */}
-
-                            <div class="mt-8">
-                                <span class="uppercase text-sm text-gray-600 font-bold">Message</span>
+                            <div className="mt-8">
+                                <span className="uppercase text-sm text-gray-600 font-bold">Message</span>
                                 <textarea
-                                    class="w-full h-32 bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"></textarea>
+                                    className="w-full h-32 bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"></textarea>
                             </div>
 
                             <div className="flex items-center justify-center">

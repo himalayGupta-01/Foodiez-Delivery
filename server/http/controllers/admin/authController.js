@@ -18,7 +18,7 @@ function authController(){
                 if(userExist){
                     return res.status(401).json({message:"Email already exist"}); // change
                 }else if(password!=cpassword){
-                    return res.status(401).json({error:"Password does not match"});
+                    return res.status(401).json({error:"Password Does Not Match"});
                 }else{
                     const user=new User({name ,email,phone,password,role:'admin'});
                     // const user=new User({name ,email,phone,password,cpassword,role:'admin'});
@@ -56,18 +56,18 @@ function authController(){
                     })
         
                     if(!isMatch){
-                        res.status(401).json({error:"Invaid Credential"})
+                        res.status(401).json({error:"Invalid Credential"})
                     }else{
                         res.status(200).json({token:token,user:userLogin,message:'Login Successfull'})
                     }
                 }
                 else{
-                    res.status(401).json({error:"Invaid Credential"})
+                    res.status(401).json({error:"Invalid Credential"})
                 }
         
             } catch (error) {
                 console.log(error);
-                res.status(500).json({ message: "internal server error", error: error })
+                res.status(500).json({ message: "Internal Server Error", error: error })
             }
         },
         async signout(req,res){

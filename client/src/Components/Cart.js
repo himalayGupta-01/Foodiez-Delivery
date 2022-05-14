@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { NavLink, useHistory } from 'react-router-dom'
 import { FaPlus, FaMinus, FaTrashAlt } from 'react-icons/fa';
 import EmptyCart from "../images/empty-cart.png"
 import CartIcon from "../images/cart-black.png"
@@ -11,7 +11,7 @@ import { takeOrder } from '../actions/Order.actions';
 const Cart = () => {
 
     const auth = useSelector(state => state.auth)
-    // const order = useSelector(state => state.order)
+    const order = useSelector(state => state.order)
 
     const dispatch = useDispatch();
 
@@ -21,7 +21,46 @@ const Cart = () => {
     })
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("")
+    const [error, setError] = useState(null);
+    const history = useHistory();
+
+
     let cartCounter = document.querySelector('#cartCounter')
+
+
+    useEffect(() => {
+        if (order.message === "Order Placed SuccessFully") {
+            history.push({
+                pathname: "/my-orders",
+                state: {
+                    from: "cart"
+                }
+            })
+            axios.post('/delete-cart').then(res => {
+                localStorage.removeItem("cart");
+                localStorage.setItem("cart", JSON.stringify({ items: {}, totalPrice: 0, totalQty: 0 }))
+                setCart({
+                    ...JSON.parse(localStorage.getItem("cart"))
+                })
+                cartCounter.innerText = "";
+            })
+        }
+    }, [order, history, cartCounter]);
+
+    useEffect(() => {
+        if (order.error && order.error.split("**")[1] !== "Failed to Login")
+            setError({
+                type: order.error.split("**")[0],
+                value: order.error.split("**")[1]
+            })
+        else {
+            setError(null)
+        }
+    }, [order]);
+
+    useEffect(() => {
+        setError(null)
+    }, [phone, address]);
 
     //incrementing value of a item in cart
     const increment = (item) => {
@@ -68,14 +107,8 @@ const Cart = () => {
             address
         }
         await dispatch(takeOrder(order));
-        axios.post('/delete-cart').then(res => {
-            localStorage.removeItem("cart");
-            localStorage.setItem("cart", JSON.stringify({ items: {}, totalPrice: 0, totalQty: 0 }))
-            setCart({
-                ...JSON.parse(localStorage.getItem("cart"))
-            })
-            cartCounter.innerText = "";
-        })
+
+
     }
 
     //displaying the cart
@@ -102,7 +135,7 @@ const Cart = () => {
 
         return (<>
             {totalCart.map(val =>
-                <div className=" flex items-center my-8 justify-between">
+                <div key={val._id} className=" flex items-center my-8 justify-between">
                     <div className="flex items-center">
                         <img className="w-24" src={generatePublicUrl(val.item.productPicture)} alt="" />
                         <div className="flex-1 ml-4" >
@@ -113,7 +146,8 @@ const Cart = () => {
                     <span className="add-minus-quantity"
                     >
                         <button onClick={() => decrement(val.item)}><FaMinus /></button>
-                        <input type="text" value={val.quantity} />
+                        {/*<input type="text" value={val.quantity} />*/}
+                        <span style={{ fontSize: "large", fontWeight: "600", margin: "10px" }}>{val.quantity}</span>
                         <button onClick={() => increment(val.item)}><FaPlus /></button>
                     </span>
                     <div className="font-bold text-lg">₹{val.item.price}</div>
@@ -151,23 +185,30 @@ const Cart = () => {
                             {
                                 auth.authenticate ? <div>
                                     <form className="mt-12" action="">
-                                        <input className="border border-gray-400 p-2 w-1/2 mb-4"
+                                        <input className="border border-gray-400 p-2 w-1/2 mb-2"
                                             type="number"
                                             placeholder="Phone Number"
                                             value={phone}
                                             onChange={(e) => setPhone(e.target.value)}
-                                        /> <br />
-                                        <input className="border border-gray-400 p-2 w-1/2 mb-4"
+                                        />
+                                        {error ? error.type === "Phone" ?
+                                            <div className="anyError">{error.value}</div>
+                                            : "" : ""
+                                        }
+                                        <br />
+                                        <input className="border border-gray-400 p-2 w-1/2 mb-2"
                                             type="text"
                                             placeholder="Address"
                                             value={address}
                                             onChange={(e) => setAddress(e.target.value)}
                                         />
+                                        {error ? error.type === "Address" ?
+                                            <div className="anyError ">{error.value}</div>
+                                            : "" : ""
+                                        }
                                     </form>
-                                    <NavLink to={{
-                                        pathname: '/my-orders',
-                                        state: { showSuccess: true }
-                                    }} ><button className="btn-primary px-6 py-2 rounded-full text-white font-bold mt-6" onClick={orderCart}>Order Now</button></NavLink>
+
+                                    <button className="btn-primary px-6 py-2 rounded-full text-white font-bold mt-6" onClick={orderCart}>Order Now</button>
                                 </div> :
                                     <>
                                         <NavLink className=" cart-login inline-block cursor-pointer px-6 py-2 rounded-full btn-primary text-white font-bold mt-6" to="/signin">Login to Continue</NavLink>

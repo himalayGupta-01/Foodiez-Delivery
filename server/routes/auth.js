@@ -4,7 +4,7 @@ const homeController = require('../http/controllers/homeController');
 const authController = require('../http/controllers/authController');
 const orderController = require('../http/controllers/customer/orderController');
 const cartController = require('../http/controllers/customer/cartController');
-const { validateSignUpRequest, validateSignInRequest, isRequestValidated } = require('../validators/validate');
+const { validateSignUpRequest, validateSignInRequest, isRequestValidated, validatePlaceOrderRequest } = require('../validators/validate');
 const { requireSignin, userMiddleware } = require('../http/middlewares/authMiddleware');
 
 
@@ -28,7 +28,7 @@ router.post('/remove-from-cart', cartController().remove)
 
 router.post('/delete-cart', cartController().deleteSession)
 
-router.post("/add-order", requireSignin, userMiddleware, orderController().addOrder)
+router.post("/add-order", requireSignin, userMiddleware, validatePlaceOrderRequest, isRequestValidated, orderController().addOrder)
 
 router.get("/orders-by-id/:id", requireSignin, userMiddleware, orderController().ordersById)
 

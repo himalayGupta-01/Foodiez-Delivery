@@ -20,39 +20,32 @@ const MyOrders = (props) => {
     const [currentOrder, setCurrentOrder] = useState({})
     const [showDetails, setShowDetails] = useState(false);
     const dispatch = useDispatch();
-    // console.log("Value of auth before use Effect is", auth.user.name)
-
-
-
 
     useEffect(() => {
+        // console.log(location)
         // socket.current = io("http://localhost:8000")
 
         // socket.current.on("connection", () => {
         //     console.log("connected to server")
         // })  
-        
+
         //emit join event to socket using id as getUpdatedOrder
         socket.emit("join", "getUpdatedOrder");
-        
+
         //if an event of type "orderUpdated" emits then do what
         socket.on("orderUpdated", (data) => {
             // console.log("DATA IS ",data)
             // console.log(auth.user.name)
-            if(data===auth.user._id)
+            if (data === auth.user._id)
                 dispatch(getOrderById(auth.user._id));
         })
-        
+
         dispatch(getOrderById(auth.user._id));
         // return socket.disconnect()
         // return socket.current.disconnect()
-    }, [auth.user._id,dispatch])
-
-
-
+    }, [auth.user._id, dispatch, auth])
 
     let location = useLocation()
-
 
     const getStatus = (status) => {
         let myWidth = "10%";
@@ -102,7 +95,7 @@ const MyOrders = (props) => {
 
         let totalCart = []
 
-        Object.entries(currentOrder.items.items).map(item => 
+        Object.entries(currentOrder.items.items).forEach(item =>
             Object.entries(item[1]).forEach(itemValue => {
                 if (itemValue[0] === "item") {
                     totalCart.push({
@@ -117,7 +110,7 @@ const MyOrders = (props) => {
 
         return (<>
             {totalCart.map(val =>
-                <div className=" flex items-center my-8 justify-between">
+                <div key={val._id} className=" flex items-center my-8 justify-between">
                     <div className="flex items-center">
                         <img className="w-24" src={generatePublicUrl(val.item.productPicture)} alt="" />
                         <div className="flex-1 ml-4" >
@@ -179,21 +172,22 @@ const MyOrders = (props) => {
     return (
         <>
             <section className="orders light-section">
-
                 <div className="container mx-auto pt-12">
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <h1 className="font-bold text-lg mb-4">All orders</h1>
                         <button className="nav-link-blue px-4 py-2 rounded-full flex items-center " onClick={() => { dispatch(getOrderById(auth.user._id)) }} ><FaSyncAlt /></button>
                     </div>
-                    {location.state && location.state.showSuccess ? <div id="success-alert" className="flex items-center bg-green-500 text-white text-sm font-bold px-4 py-3"
+                    {location.state && location.state.from === "cart" ? <div id="success-alert" className="flex items-center bg-green-500 text-white text-sm font-bold px-4 py-3"
                         role="alert">
                         <svg className="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                             <path
                                 d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z" />
                         </svg>
                         <p>Order Placed Successfully</p>
-                    </div> : null}
+                    </div>
 
+                        : null
+                    }
                     <Container>
                         <Row>
                             <Col>
@@ -219,12 +213,13 @@ const MyOrders = (props) => {
                                                 order.orders.map((order, index) => {
                                                     return <>
                                                         <tr
-
+                                                            key={order._id}
                                                             style={{
                                                                 textDecoration: order.status === "Order Cancelled" ? "line-through" : "none",
-                                                                textDecorationThickness: order.status === "Order Cancelled" ? "10%" : "auto"
+                                                                textDecorationThickness: order.status === "Order Cancelled" ? "10%" : "auto",
+                                                                paddingBottom:"10px"
                                                             }}
-                                                            key={order._id}>
+                                                        >
                                                             <td>{`${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[1]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[0]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[2]}`}</td>
                                                             <td>{new Date((order.createdAt).toString()).toLocaleTimeString()}</td>
 
@@ -238,24 +233,13 @@ const MyOrders = (props) => {
                                                             <td style={{
                                                                 display: "flex",
                                                                 justifyContent: "space-around",
-                                                                // flexDirection: "column"
                                                             }}>
-
-                                                                {/* <button
-                                                                    className="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                                    // type="button"
-                                                                    onClick={() => handleShowOrderDetails(order)}
-                                                                >
-                                                                    Open large modal
-                                                                </button> */}
-
-
                                                                 <Button variant="outline-primary" onClick={() => {
                                                                     handleShowOrderDetails(order)
                                                                 }}>Details</Button>
                                                             </td>
                                                         </tr>
-                                                        <br />
+                                                        {/* <br /> */}
                                                     </>
                                                 }
 

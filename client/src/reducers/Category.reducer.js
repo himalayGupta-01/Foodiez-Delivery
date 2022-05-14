@@ -21,7 +21,6 @@ const showCategories=(categories,category)=>{
 const CategoryReducer=(state=initState,action)=>{
     switch(action.type){
         case categoryConstant.GET_ALL_CATEGORIES_SUCCESS:
-            console.log(initState.loading);
             state={
                 ...state,
                 categories:action.payload.categories

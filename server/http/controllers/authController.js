@@ -15,10 +15,10 @@ function authController(){
                 const userExist = await User.findOne({email:email})
 
                 if(userExist){
-                    console.log("Email already exist");
-                    return res.status(401).json({message:"Email already exist"}); //change
+                    // console.log("Email already exist");
+                    return res.status(401).json({message:"Server**Email already exist"}); //change
                 }else if(password!=cpassword){
-                    return res.status(401).json({error:"Password does not match"});
+                    return res.status(401).json({error:"Confirm Password**Password Does Not Match"});
                 }else{
                     const user=new User({name ,email,phone,password});
 
@@ -29,8 +29,8 @@ function authController(){
                 }
 
             } catch (error) {
-                console.log(error);
-                res.status(500).json({message:"Internal server error"})
+                // console.log(error);
+                res.status(500).json({error:"Server**Internal server error"})
             }
         },
         async signin(req,res){
@@ -38,8 +38,8 @@ function authController(){
                 const {email,password}=req.body;
         
                 if(!email || !password){
-                    console.log("invalid dta match")
-                    return res.status(400).json({error:"Please  fill the data"})
+                    // console.log("invalid dta match")
+                    return res.status(400).json({error:"Please fill the data"})
                 }
         
                 const userLogin= await User.findOne({email:email});
@@ -56,20 +56,18 @@ function authController(){
                     })
         
                     if(!isMatch){
-                        console.log("not match");
-                        return res.status(401).json({error:"Invalid Credentials"})
+                        return res.status(401).json({error:"Server**Invalid Credentials"})
                     }else{
                         return res.status(200).json({token:token,user:userLogin,message:'Login Successfull'})
                     }
                 }
                 else{
-                    console.log("invalid cred match");
-                   return res.status(401).json({error:"Invalid Credentials"})
+                   return res.status(401).json({error:"Server**Invalid Credentials"})
                 }
         
             } catch (error) {
-                console.log(error);
-                res.status(500).json({ message: "internal server error", error: error })
+                // res.status(500).json({ message: "Internal Server Error", error: error })
+                res.status(500).json({error:"Server**Internal Server Error" })
             }
         },
         async signout(req,res){

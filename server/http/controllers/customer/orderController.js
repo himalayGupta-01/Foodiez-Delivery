@@ -4,7 +4,7 @@ function orderController() {
     return {
         async addOrder(req, res) {
 
-            const { user, items, phone, address } = req.body.item;
+            const { user, items, phone, address } = req.body;
             if (!user || !phone || !address) {
                 return res.status(400).json({ error: "plz fill fields properly" })
             }

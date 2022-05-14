@@ -12,15 +12,36 @@ const SignUp = () => {
     const auth = useSelector(state => state.auth);
     const userStore = useSelector(state => state.user);
     const [error, setError] = useState(null);
-    const userState = useSelector(state => state.user);
-
-    const dispatch = useDispatch()
-
     const [user, setUser] = useState({
         name: "", email: "", phone: "", password: "", cpassword: ""
     });
 
-    const handelInput = (e) => {
+    const history = useHistory();
+    const dispatch = useDispatch()
+
+
+    useEffect(() => {
+        if (userStore.message === "User registered successfully") {
+            history.push("/signin")
+        }
+    }, [userStore, history]);
+
+
+    useEffect(() => {
+        if (userStore.error && userStore.error.split("**")[1] !== "Failed to Login")
+            setError({
+                type: userStore.error.split("**")[0],
+                value: userStore.error.split("**")[1]
+            })
+        else
+            setError(null)
+    }, [userStore]);
+
+    useEffect(() => {
+        setError(null)
+    }, [user]);
+
+    const handleInput = (e) => {
         let name = e.target.name;
         let value = e.target.value;
 
@@ -30,28 +51,11 @@ const SignUp = () => {
     const PostData = async (e) => {
         e.preventDefault();
         await dispatch(signup(user));
-        if (userStore.error)
-            await setError({
-                type:userStore.error.split("**")[0],
-                value:userStore.error.split("**")[1]
-            })
     }
-
-    const history = useHistory();
-    useEffect(() => {
-        if (userState.message === "User registered successfully") {
-            history.push("/signin")
-        }
-    }, [userState, history]);
 
     if (auth.authenticate) {
         return <Redirect to="/" />
     }
-
-    // if (userState.loading) {
-    //     return <h1>...Loading !</h1>
-    // }
-
 
     return (
         <>
@@ -65,7 +69,11 @@ const SignUp = () => {
                                 <label className=" text-gray-700 text-sm font-bold mb-2 flex" htmlFor="name">
                                     <FaUserAlt /> <span className=" px-3">Name</span>
                                 </label>
-                                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="name" id="name" type="text" autoComplete="off" value={user.name} onChange={handelInput} placeholder="Enter your Name" />
+                                <input className="mb-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="name" id="name" type="text" autoComplete="off" value={user.name} onChange={handleInput} placeholder="Enter your Name" />
+                                {error ? error.type === "Name" ?
+                                    <div className="anyError mb-6">{error.value}</div>
+                                    : "" : ""
+                                }
                             </div>
 
 
@@ -73,7 +81,11 @@ const SignUp = () => {
                                 <label className=" text-gray-700 text-sm font-bold mb-2 flex" htmlFor="email">
                                     <FaEnvelope /> <span className=" px-3">Email</span>
                                 </label>
-                                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="email" id="email" type="email" autoComplete="off" value={user.email} onChange={handelInput} placeholder="Enter your Email" />
+                                <input className="mb-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="email" id="email" type="email" autoComplete="off" value={user.email} onChange={handleInput} placeholder="Enter your Email" />
+                                {error ? error.type === "Email" ?
+                                    <div className="anyError mb-6">{error.value}</div>
+                                    : "" : ""
+                                }
                             </div>
 
 
@@ -81,7 +93,11 @@ const SignUp = () => {
                                 <label className=" text-gray-700 text-sm font-bold mb-2 flex" htmlFor="phone">
                                     <FaPhoneAlt /> <span className=" px-3">Phone Number</span>
                                 </label>
-                                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="phone" id="phoneNumber" type="number" autoComplete="off" value={user.phone} onChange={handelInput} placeholder="Enter your Phone number" />
+                                <input className="mb-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="phone" id="phoneNumber" type="number" autoComplete="off" value={user.phone} onChange={handleInput} placeholder="Enter your Phone number" />
+                                {error ? error.type === "Phone" ?
+                                    <div className="anyError mb-6">{error.value}</div>
+                                    : "" : ""
+                                }
                             </div>
 
 
@@ -89,7 +105,11 @@ const SignUp = () => {
                                 <label className=" text-gray-700 text-sm font-bold mb-2 flex" htmlFor="password">
                                     <FaUnlockAlt /> <span className=" px-3">Password</span>
                                 </label>
-                                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="password" id="password" type="password" value={user.password} onChange={handelInput} placeholder="**********" />
+                                <input className="mb-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="password" id="password" type="password" value={user.password} onChange={handleInput} placeholder="**********" />
+                                {error ? error.type === "Password" ?
+                                    <div className="anyError mb-6">{error.value}</div>
+                                    : "" : ""
+                                }
                             </div>
 
 
@@ -97,12 +117,18 @@ const SignUp = () => {
                                 <label className=" text-gray-700 text-sm font-bold mb-2 flex" htmlFor="password">
                                     <FaUnlockAlt /> <span className=" px-3">Confirm Password</span>
                                 </label>
-                                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" name="cpassword" id="cpassword" type="password" value={user.cpassword} onChange={handelInput} placeholder="**********" />
+                                <input className="mb-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" name="cpassword" id="cpassword" type="password" value={user.cpassword} onChange={handleInput} placeholder="**********" />
+                                {error ? error.type === "Confirm Password" ?
+                                    <div className="anyError mb-6">{error.value}</div>
+                                    : "" : ""
+                                }
                             </div>
 
-                            <div className="anyError mb-6">
-                                {error.type}
-                            </div>
+                            {error ? error.type === "Server" ?
+                                <div className="anyError mb-6">{error.value}
+                                </div>
+                                : "" : ""
+                            }
 
 
                             <div className="flex items-center justify-between">
@@ -119,7 +145,7 @@ const SignUp = () => {
                         </form>
 
                         <p className="text-center text-gray-500 text-xs">
-                            &copy;2021 Foodiez Delivery All rights reserved.
+                            &copy;2022 Foodiez Delivery All Rights Reserved.
                         </p>
 
                     </div>

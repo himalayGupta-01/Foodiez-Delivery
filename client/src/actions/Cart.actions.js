@@ -7,8 +7,9 @@ export const updateCart=(item)=>{
 
         dispatch({type:cartConstant.UPDATE_CART_REQUEST});
 
-        const res=await axios.post('/update-cart',{item}) 
-        console.log(res.data);
+        await axios.post('/update-cart',{item})
+        // const res=await axios.post('/update-cart',{item}) 
+        // console.log(res);
         // if(res.status===200){
 
         //     const {products }=res.data

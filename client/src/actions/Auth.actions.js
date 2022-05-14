@@ -8,7 +8,7 @@ export const login = (user) => {
         const res = await axios.post('/signin', {
             ...user
         });
-        // console.log(res.status)
+        // console.log(res)
 
         if (res.status === 200) {
             const { token, user } = res.data;
@@ -38,6 +38,7 @@ export const signup = (user) => {
         const res = await axios.post('/signup', {
             ...user
         });
+        // console.log(res)
 
         if (res.status === 201) {
             const { message } = res.data;
@@ -75,7 +76,7 @@ export const isUserLoggedIn = () => {
         } else {
             dispatch({
                 type: authConstant.LOGIN_FAILURE,
-                payload: { error: 'Failed to Login' }
+                payload: { error:'Server**Failed to Login' }
             });
         }
     }
@@ -88,6 +89,7 @@ export const signout = () => {
             type: authConstant.LOGOUT_REQUEST
         })
         const res = await axios.post('/signout');
+        // console.log(res)
 
         if (res.status === 200) {
 
