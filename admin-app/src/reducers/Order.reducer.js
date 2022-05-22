@@ -4,7 +4,7 @@ import { orderConstant } from "../actions/Constants";
 const initialState = {
     orders: [],
     loading: false,
-    error: null
+    error: ""
 }
 
 const orderReducer = (state = initialState, action) => {

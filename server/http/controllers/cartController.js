@@ -3,7 +3,7 @@ const Cart = require('../../models/cart');
 exports.addItemToCart=(req,res)=>{
     
     Cart.findOne({user:req.user._id})
-    .exec((error,cart)=>{
+    .exec((error,cart)=>{ 
         if(error) return res.status(400).json({error})
         if(cart){
             // if cart already exist then upate cart by quantity

@@ -32,12 +32,12 @@ export const addCategory = (name) => {
         if (res.status === 201) {
             dispatch({
                 type: categoryConstant.ADD_NEW_CATEGORY_SUCCESS,
-                payload: { category: res.data.category }
+                // payload: { category: res.data.category }
             });
         } else {
             dispatch({
                 type: categoryConstant.ADD_NEW_CATEGORY_FAILURE,
-                payload: res.data.error
+                payload: {error:res.data.error}
             });
         }
         // console.log("Added category result is ",res);
@@ -72,7 +72,6 @@ export const deleteCategory = (id) => {
         if (res.status === 200) {
             dispatch({
                 type: categoryConstant.DELETE_CATEGORY_SUCCESS,
-                // payload: {category:res.data}
             });
         } else {
             dispatch({

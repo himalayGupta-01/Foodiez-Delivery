@@ -21,10 +21,6 @@ const User = require('./models/userSchema')
 //setting body parser (json to object)
 app.use(express.json());
 
-
-
-
-
 // session config
 app.use(session({
     secret: process.env.SECRET_KEY,

@@ -215,9 +215,10 @@ const MyOrders = (props) => {
                                                         <tr
                                                             key={order._id}
                                                             style={{
-                                                                textDecoration: order.status === "Order Cancelled" ? "line-through" : "none",
-                                                                textDecorationThickness: order.status === "Order Cancelled" ? "10%" : "auto",
-                                                                paddingBottom:"10px"
+                                                                // marginBottom: "20px",
+                                                                backgroundColor: order.status === "Order Cancelled" ? "#e8090999" : order.status === "Delivered" ? "#69db7d" : "inherit",
+                                                                // textDecoration: order.status === "Order Cancelled" ? "line-through" : "none",
+                                                                // textDecorationThickness: order.status === "Order Cancelled" ? "10%" : "auto",
                                                             }}
                                                         >
                                                             <td>{`${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[1]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[0]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[2]}`}</td>

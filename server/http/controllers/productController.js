@@ -1,6 +1,7 @@
 const Product = require('../../models/product');
-const Category = require('../../models/category');
 const slugify = require('slugify')
+const fs=require("fs");
+const path=require("path")
 
 exports.createProduct = (req, res) => {
 
@@ -44,7 +45,11 @@ exports.updateProduct = async (req, res) => {
             description,
             category
     }
+    
     if (req.file) {
+        //if new picture was there then delete the previous one
+        const previous=await Product.findById(req.params.id) ;
+        fs.unlink(path.join(__dirname,"../../","uploads",previous.productPicture),(err)=>err?console.log("error removing file",err):"");
         product = {
             ...product,
             productPicture:req.file.filename
@@ -57,6 +62,8 @@ exports.updateProduct = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
     const result = await Product.findByIdAndDelete(req.params.id).exec((error, res) => {
+        //delete the image of the deleted product
+        fs.unlink(path.join(__dirname,"../../","uploads",res.productPicture),(err)=>err?console.log("error removing file",err):"");
         if (error) return res.status(400).json(error)
     });
 }

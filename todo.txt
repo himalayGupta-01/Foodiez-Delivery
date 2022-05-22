@@ -1,3 +1,2 @@
-Validation on Front End
+Validation on Front End of admin
 Reduce the number of request on server
-clear the console

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Col, Container, Row, Table, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../../Components/Layout/Layout';
@@ -17,7 +17,7 @@ const Products = (props) => {
     const [price, setPrice] = useState("");
     const [description, setDescription] = useState("");
     const [categoryId, setCategoryId] = useState("");
-
+    const [error, setError] = useState(null);
 
     const [showProductDetailModal, setShowProductDetailModal] = useState(false);
     const [productDetails, setProductDetails] = useState(null);
@@ -32,8 +32,30 @@ const Products = (props) => {
     const category = useSelector(state => state.category)
     const product = useSelector(state => state.product)
 
+    const preLength = product.products.length
+    const [newLength, setNewLength] = useState(preLength);
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        setNewLength(product.products.length);
+        if (product.error)
+            setError({
+                type: product.error.split("**")[0],
+                value: product.error.split("**")[1]
+            })
+        else
+            setError(null)
+    }, [product]);
+
+    useEffect(() => {
+        if (newLength !== preLength)
+            handleClose()
+    }, [newLength, preLength, dispatch])
+
+    useEffect(() => {
+        setError(null)
+    }, [name, productPicture, price, description, categoryId])
 
 
     //to show the previously added products
@@ -113,7 +135,7 @@ const Products = (props) => {
     }
 
     //to add the new product
-    const addNewProduct = () => {
+    const addNewProduct = async () => {
 
         const form = new FormData();
         form.append("name", name);
@@ -123,11 +145,13 @@ const Products = (props) => {
         form.append("category", categoryId);
 
         // done by videos
-        dispatch(addProduct(form, category.categories));
-        handleClose();
+        if (productPicture) {
+            await dispatch(addProduct(form, category.categories));
+            await dispatch(getInitialData())
+        }
+        else
+            await setError({ type: "Product Picture", value: "Product Picture is Required" });
     }
-
-
 
     //what to show on add product modal
     const renderAddProductModal = () => {
@@ -147,6 +171,10 @@ const Products = (props) => {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
+                        {error ? error.type === "Name" ?
+                            <div className="anyError mb-6">{error.value}</div>
+                            : "" : ""
+                        }
                     </Col>
                 </Row>
 
@@ -160,6 +188,10 @@ const Products = (props) => {
                             onChange={(e) => setPrice(e.target.value)}
                         />
                     </Col>
+                    {error ? error.type === "Price" ?
+                        <div className="anyError mb-6">{error.value}</div>
+                        : "" : ""
+                    }
                 </Row>
 
                 <Row>
@@ -171,10 +203,13 @@ const Products = (props) => {
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                         />
+                        {error ? error.type === "Description" ?
+                            <div className="anyError mb-6">{error.value}</div>
+                            : "" : ""
+                        }
                     </Col>
                 </Row>
 
-                {/* <br /> */}
                 <Row>
                     <Col>
                         <select
@@ -188,6 +223,10 @@ const Products = (props) => {
                                 )
                             }
                         </select>
+                        {error ? error.type === "Category" ?
+                            <div className="anyError mb-6">{error.value}</div>
+                            : "" : ""
+                        }
                     </Col>
                 </Row>
 
@@ -200,6 +239,10 @@ const Products = (props) => {
                             placeholder={"Product Picture"}
                             onChange={(e) => setProductPicture(e.target.files[0])}
                         />
+                        {error ? error.type === "Product Picture" ?
+                            <div className="anyError mb-6">{error.value}</div>
+                            : "" : ""
+                        }
                         {/* {
                             productPictures.length > 0 ?
                                 productPictures.map((pic, index) => <div key={index}> {pic.name} </div>) : null
@@ -235,7 +278,6 @@ const Products = (props) => {
                 handleClose={handleCloseProductDetailsModal}
                 modelTitle={"Product Details"}
                 dontShowSubmitButton={true}
-                // size="lg"
             >
                 <Row>
                     <Col md="6">
@@ -305,7 +347,7 @@ const Products = (props) => {
         form.append("description", description);
         form.append("category", categoryId);
 
-        await dispatch(updateProduct(form, idToOperate));
+        dispatch(updateProduct(form, idToOperate));
         dispatch(getInitialData())
         handleCloseUpdateProductModal();
 
@@ -328,6 +370,10 @@ const Products = (props) => {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
+                        {error ? error.type === "Name" ?
+                            <div className="anyError mb-6">{error.value}</div>
+                            : "" : ""
+                        }
                     </Col>
                 </Row>
 
@@ -340,6 +386,10 @@ const Products = (props) => {
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
                         />
+                        {error ? error.type === "Price" ?
+                            <div className="anyError mb-6">{error.value}</div>
+                            : "" : ""
+                        }
                     </Col>
                 </Row>
 
@@ -352,6 +402,10 @@ const Products = (props) => {
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                         />
+                        {error ? error.type === "Description" ?
+                            <div className="anyError mb-6">{error.value}</div>
+                            : "" : ""
+                        }
                     </Col>
                 </Row>
                 <Row>
@@ -367,6 +421,10 @@ const Products = (props) => {
                                 )
                             }
                         </select>
+                        {error ? error.type === "Category" ?
+                            <div className="anyError mb-6">{error.value}</div>
+                            : "" : ""
+                        }
                     </Col>
                 </Row>
 
@@ -374,17 +432,17 @@ const Products = (props) => {
 
                 <Row>
                     <Col>
-                            <br />
+                        <br />
                         {
                             productPicture !== "" ?
                                 <div style={{ display: "flex", flexDirection: "column" }}>
                                     <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                                         <label>Current Product Picture </label>
                                         <div className="productImgContainer">
-                                            <img src={generatePublicUrl(productPicture)} alt="productImage"/>
+                                            <img src={generatePublicUrl(productPicture)} alt="productImage" />
                                         </div>
                                     </div>
-                                    
+
                                 </div> : null
                         }
                         <Input

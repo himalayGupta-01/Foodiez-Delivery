@@ -1,7 +1,7 @@
 import { userConstant } from "../actions/Constants"
 
 const initState = {
-    error: null,
+    error: "",
     message: "",
     loading: false
 }

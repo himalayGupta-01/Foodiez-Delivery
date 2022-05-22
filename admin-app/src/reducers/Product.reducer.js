@@ -1,56 +1,36 @@
 import { productConstant } from "../actions/Constants";
 
-
-// done by videos
-// const initialState = {
-//     products: []
-// }
-
-// export default (state = initialState, action) => {
-//     switch (action.type) {
-//         case productConstant.GET_ALL_PRODUCTS_SUCCESS:
-//             state = {
-//                 ...state,
-//                 products: action.payload.products
-//             }
-//             break;
-//     }
-//     return state;
-// }
-
-
-
-// done by me to display added product immediately
+// done by me to display added product immediately 
 const initialState = {
     products: [],
     loading: false,
-    error: null
+    error: ""
 }
 
-const showProducts = (products, product, categories) => {
+// const showProducts = (products, product, categories) => {
 
-    let newProducts = [];
-    for (let prod of products) {
-        newProducts.push({
-            ...prod
-        })
-    }
+//     let newProducts = [];
+//     for (let prod of products) {
+//         newProducts.push({
+//             ...prod
+//         })
+//     }
 
-    categories.forEach((cat) => {
-        if (cat._id === product.category) {
-            let category = {
-                _id: cat._id,
-                name: cat.name
-            }
-            product.category = category;
-        }
-    })
+//     categories.forEach((cat) => {
+//         if (cat._id === product.category) {
+//             let category = {
+//                 _id: cat._id,
+//                 name: cat.name
+//             }
+//             product.category = category;
+//         }
+//     })
 
-    newProducts.push({
-        ...product
-    });
-    return newProducts;
-}
+//     newProducts.push({
+//         ...product
+//     });
+//     return newProducts;
+// }
 
 const productReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -71,14 +51,16 @@ const productReducer = (state = initialState, action) => {
         case productConstant.ADD_NEW_PRODUCT_SUCCESS:
             state = {
                 ...state,
-                products: showProducts(state.products, action.payload.product, action.payload.categories),
-                loading: false
+                // products: showProducts(state.products, action.payload.product, action.payload.categories),
+                loading: false,
+                error:""
 
             }
             break;
         case productConstant.ADD_NEW_PRODUCT_FAILURE:
             state = {
-                ...initialState
+                ...state,
+                error:action.payload.error,
             }
             break;
         case productConstant.UPDATE_PRODUCT_REQUEST:
@@ -97,7 +79,8 @@ const productReducer = (state = initialState, action) => {
             break;
         case productConstant.UPDATE_PRODUCT_FAILURE:
             state = {
-                ...initialState
+                ...state,
+                error:action.payload.error
             }
             break;
         case productConstant.DELETE_PRODUCT_REQUEST:

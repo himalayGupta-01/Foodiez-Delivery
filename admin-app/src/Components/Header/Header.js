@@ -6,18 +6,22 @@ import { signout } from '../../actions/Auth.actions'
 
 const Header = (props) => {
 
-    const auth =useSelector(state=>state.auth);
-    const dispatch=useDispatch();
+    const auth = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
-    const logout =()=>{
+    const logout = () => {
         dispatch(signout())
     }
 
     const loggedInLink = () => {
         return (
             <Nav>
+                {/* <li className="nav-item"><NavLink className="nav-link" exact to={"/"}>Home</NavLink></li>
+                <li className="nav-item"><NavLink className="nav-link" to={"/category"}>Category</NavLink></li>
+                <li className="nav-item"><NavLink className="nav-link" to={"/products"}>Products</NavLink></li>
+                <li className="nav-item"><NavLink className="nav-link" to={"/orders"}>Orders</NavLink></li> */}
                 <li className="nav-item">
-                    <span style={{cursor:"pointer"}} className="nav-link" onClick={logout}>Signout</span>
+                    <span style={{ cursor: "pointer" }} className="nav-link" onClick={logout}>Signout</span>
                 </li>
             </Nav>
         )
@@ -28,10 +32,10 @@ const Header = (props) => {
             <Nav>
                 {/* <Nav.Link to='#deets'>Signin</Nav.Link> */}
                 <li className="nav-item">
-                    <NavLink to="/signin" style={{cursor:"pointer"}} className="nav-link">Signin</NavLink>
+                    <NavLink to="/signin" style={{ cursor: "pointer" }} className="nav-link">Signin</NavLink>
                 </li>
                 <li className="nav-item">
-                    <NavLink to="/signup" style={{cursor:"pointer"}} className="nav-link">Signup</NavLink>
+                    <NavLink to="/signup" style={{ cursor: "pointer" }} className="nav-link">Signup</NavLink>
                 </li>
             </Nav>
         )
@@ -55,7 +59,7 @@ const Header = (props) => {
                 <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
               </NavDropdown> */}
                         </Nav>
-                        {auth.authenticate?loggedInLink():nonLoggedInLink()}
+                        {auth.authenticate ? loggedInLink() : nonLoggedInLink()}
 
                     </Navbar.Collapse>
                 </Container>

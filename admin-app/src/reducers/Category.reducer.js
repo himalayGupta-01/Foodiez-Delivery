@@ -3,20 +3,20 @@ import { categoryConstant } from "../actions/Constants";
 const initState = {
     categories: [],
     loading: false,
-    error: null
+    error: ""
 };
-const showCategories = (categories, category) => {
-    let newCategories = [];
-    for (let cat of categories) {
-        newCategories.push({
-            ...cat
-        })
-    }
-    newCategories.push({
-        ...category
-    });
-    return newCategories;
-}
+// const showCategories = (categories, category) => {
+//     let newCategories = [];
+//     for (let cat of categories) {
+//         newCategories.push({
+//             ...cat
+//         })
+//     }
+//     newCategories.push({
+//         ...category
+//     });
+//     return newCategories;
+// }
 
 const CategoryReducer = (state = initState, action) => {
     switch (action.type) {
@@ -35,14 +35,15 @@ const CategoryReducer = (state = initState, action) => {
         case categoryConstant.ADD_NEW_CATEGORY_SUCCESS:
             state = {
                 ...state,
-                categories: showCategories(state.categories, action.payload.category),
+                // categories: showCategories(state.categories, action.payload.category),
                 loading: false
 
             }
             break;
         case categoryConstant.ADD_NEW_CATEGORY_FAILURE:
             state = {
-                ...initState
+                ...initState,
+                error:action.payload.error
             }
             break;
         case categoryConstant.UPDATE_CATEGORY_REQUEST:
@@ -61,7 +62,8 @@ const CategoryReducer = (state = initState, action) => {
             break;
         case categoryConstant.UPDATE_CATEGORY_FAILURE:
             state = {
-                ...initState
+                ...initState,
+                error:action.payload.error
             }
             break;
         case categoryConstant.DELETE_CATEGORY_REQUEST:
@@ -80,7 +82,8 @@ const CategoryReducer = (state = initState, action) => {
             break;
         case categoryConstant.DELETE_CATEGORY_FAILURE:
             state = {
-                ...initState
+                ...initState,
+                error:action.payload.error
             }
             break;
             default: break;

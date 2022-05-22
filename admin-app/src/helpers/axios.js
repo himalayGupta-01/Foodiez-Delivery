@@ -15,9 +15,9 @@ const axiosIsntance = axios.create({
 
 //when jwt expires or some error occured with the axios request then this will handle it
 axiosIsntance.interceptors.request.use((req) => {
-    const {auth}=store.getState();
-    if(auth.token){
-        req.headers.Authorization=`Bearer ${auth.token}`;
+    const { auth } = store.getState();
+    if (auth.token) {
+        req.headers.Authorization = `Bearer ${auth.token}`;
     }
     return req;
 })
@@ -28,16 +28,17 @@ axiosIsntance.interceptors.request.use((req) => {
 axiosIsntance.interceptors.response.use((res) => {
     return res;
 }, (error) => {
-    console.log(error.response);
-    const { status } = error.response;
-    if (status === 500) {        //for jwt expired
-        localStorage.clear();
-        store.dispatch({type:authConstant.LOGOUT_SUCCESS});
+    if (error) {
+        const { status } = error.response;
+        if (status === 500) {        //for jwt expired
+            localStorage.clear();
+            store.dispatch({ type: authConstant.LOGOUT_SUCCESS });
+        }
+        else {
+            return error.response;
+        }
+        return Promise.reject(error);
     }
-    else{
-        return error.response;
-    }
-    return Promise.reject(error);
 })
 
 export default axiosIsntance;

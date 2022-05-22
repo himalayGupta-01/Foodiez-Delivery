@@ -19,6 +19,6 @@ export const getInitialData = () => {
                 payload: { orders }
             });
         }
-        console.log("Fetched Initial Data is ",res);
+        // console.log("Fetched Initial Data is ",res);
     }
 }

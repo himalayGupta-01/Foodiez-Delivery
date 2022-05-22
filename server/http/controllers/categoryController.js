@@ -9,10 +9,6 @@ exports.addCategory=(req,res)=>{
         slug:slugify(req.body.name)
     }
 
-    // if(req.body.parentId){                           // for sub categories
-    //     categoryObj.parentId=req.body.parentId
-    // }
-
     const cat = new Category(categoryObj);
     cat.save((error,category)=>{
         if(error) return res.status(400).json({error})
@@ -44,11 +40,12 @@ exports.updateCategory=async (req,res)=>{
 }
 
 exports.deleteCategory=async (req,res)=>{
-    const result=await Product.deleteMany({category:req.params.id}).exec((error,res)=>{
+    const result=await Product.deleteOne({category:req.params.id}).exec((error,data)=>{
         if(error) return res.status(400).json(error)
     });  
-    const result2 = await Category.findByIdAndDelete(req.params.id).exec((error,res)=>{
+    const result2 = await Category.findByIdAndDelete(req.params.id).exec((error,data)=>{
         if(error) return res.status(400).json(error)
-    });
+        return res.status(200).json(data)
+    }); 
    
 }

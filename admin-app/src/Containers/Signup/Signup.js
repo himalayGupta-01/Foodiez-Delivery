@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import Layout from '../../Components/Layout/Layout'
 import Input from '../../Components/UI/Input/Input'
@@ -14,16 +14,29 @@ const Signup = () => {
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [cpassword, setCPassword] = useState('');
-    // const [error, setError] = useState('');
+    const [error, setError] = useState(null);
     const auth = useSelector(state => state.auth);
     const user = useSelector(state => state.user);
     const dispatch = useDispatch();
 
+
+    useEffect(() => {
+        if (user.error && user.error.split("**")[1] !== "Failed to Login")
+            setError({
+                type: user.error.split("**")[0],
+                value: user.error.split("**")[1]
+            })
+        else
+            setError(null)
+    }, [user]);
+
+    useEffect(() => {
+        setError(null)
+    }, [ name, email, password, cpassword, phone])
+
     const userSignup = (e) => {
 
         e.preventDefault();
-
-
         const user = {
             name, email, password, cpassword, phone
         }
@@ -35,9 +48,9 @@ const Signup = () => {
         return <Redirect to="/" />
     }
 
-    if (user.loading) {
-        return <h1>...Loading !</h1>
-    }
+    // if (user.loading) {
+    //     return <h1>...Loading !</h1>
+    // }
 
 
     return (
@@ -53,14 +66,22 @@ const Signup = () => {
                                 type='text'
                                 onChange={(e) => setName(e.target.value)}
                             />
+                            {error ? error.type === "Name" ?
+                                <div className="anyError mb-6">{error.value}</div>
+                                : "" : ""
+                            }
 
                             <Input
                                 label="Email"
                                 placeholder="Email"
                                 value={email}
-                                type='email'
+                                type='text'
                                 onChange={(e) => setEmail(e.target.value)}
                             />
+                            {error ? error.type === "Email" ?
+                                <div className="anyError mb-6">{error.value}</div>
+                                : "" : ""
+                            }
 
                             <Input
                                 label="Phone"
@@ -69,6 +90,10 @@ const Signup = () => {
                                 type='number'
                                 onChange={(e) => setPhone(e.target.value)}
                             />
+                            {error ? error.type === "Phone" ?
+                                <div className="anyError mb-6">{error.value}</div>
+                                : "" : ""
+                            }
 
                             <Input
                                 label="Password"
@@ -77,6 +102,10 @@ const Signup = () => {
                                 type='password'
                                 onChange={(e) => setPassword(e.target.value)}
                             />
+                            {error ? error.type === "Password" ?
+                                <div className="anyError mb-6">{error.value}</div>
+                                : "" : ""
+                            }
 
                             <Input
                                 label="Confirm Password"
@@ -85,9 +114,18 @@ const Signup = () => {
                                 type='password'
                                 onChange={(e) => setCPassword(e.target.value)}
                             />
+                            {error ? error.type === "Confirm Password" ?
+                                <div className="anyError mb-6">{error.value}</div>
+                                : "" : ""
+                            }
                             <Button variant="primary" type="submit">
                                 Submit
                             </Button>
+                            {error ? error.type === "Server" ?
+                                <div className="anyError mb-6">{error.value}
+                                </div>
+                                : "" : ""
+                            }
                         </Form>
                     </Col>
                 </Row>

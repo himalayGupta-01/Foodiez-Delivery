@@ -9,13 +9,13 @@ const initState = {
     authenticate: false,
     authenticating: false,
     loading: false,
-    error: null,
+    error: "",
     message: ''
 };
 
 const AuthReducer = (state = initState, action) => {
 
-    console.log(action);
+    // console.log(action);
 
     switch (action.type) {
         case authConstant.LOGIN_REQUEST:
@@ -36,6 +36,7 @@ const AuthReducer = (state = initState, action) => {
         case authConstant.LOGIN_FAILURE:
             state = {
                 ...initState,
+                error:action.payload.error
                 // loading: true
             }
             break;
@@ -53,7 +54,6 @@ const AuthReducer = (state = initState, action) => {
         case authConstant.LOGOUT_FAILURE:
             state = {
                 ...state,
-                error: action.payload.error,
                 loading: false
             }
             break;

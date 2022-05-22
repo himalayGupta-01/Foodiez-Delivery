@@ -1,3 +1,9 @@
+.anyError {
+  display: flex;
+  justify-content: flex-end;
+  color: red;
+  font-weight: 600;
+}
 .modal-header{
     padding:5px 15px;
     background-color: #333;
