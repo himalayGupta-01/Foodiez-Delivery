@@ -347,8 +347,8 @@ const Products = (props) => {
         form.append("description", description);
         form.append("category", categoryId);
 
-        dispatch(updateProduct(form, idToOperate));
-        dispatch(getInitialData())
+        await dispatch(updateProduct(form, idToOperate));
+        await dispatch(getInitialData())
         handleCloseUpdateProductModal();
 
     }
