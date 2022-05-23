@@ -64,7 +64,7 @@ const Home = () => {
 
     const handleInput = (item) => {
         updateCart(item)
-        toast.success("product added", {
+        toast.success("Product Added", {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -102,32 +102,32 @@ const Home = () => {
                 <div className="menu container mx-auto py-8">
                     {makeMenu().map((category) => {
                         return (
-                        <div key={category._id}>
-                            <br />
-                            <h1 className="text-xl font-bold mb-8">{category.name}</h1>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-12 gap-y-16">
-                                {category.products.map(product => {
-                                    return (<div key={product._id} className="w-full md:w-64">
-                                        <img className="h-40 mb-4 mx-auto" src={generatePublicUrl(product.productPicture)} alt="" />
-                                        <div className="text-center">
-                                            <h2 className="mb-4 text-lg">{product.name}</h2>
-                                            {/* <span className="size py-1 px-4 rounded-full uppercase text-xs">{product.description}</span> */}
-                                            <div className="flex items-center justify-around mt-6">
-                                                <span className="font-bold text-lg">₹{product.price}</span>
-                                                <button onClick={() => handleInput(product)}
-                                                    className="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
-                                                    <span>+</span>
-                                                    <span className="ml-4">Add</span>
-                                                </button>
-                                                {/* <ToastContainer /> */}
+                            <div key={category._id}>
+                                <br />
+                                <h1 className="text-xl font-bold mb-8">{category.name}</h1>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-12 gap-y-16">
+                                    {category.products.map(product => {
+                                        return (<div key={product._id} className="w-full md:w-64">
+                                            <img className="h-40 mb-4 mx-auto" src={generatePublicUrl(product.productPicture)} alt="" />
+                                            <div className="text-center">
+                                                <h2 className="mb-4 text-lg">{product.name}</h2>
+                                                {/* <span className="size py-1 px-4 rounded-full uppercase text-xs">{product.description}</span> */}
+                                                <div className="flex items-center justify-around mt-6">
+                                                    <span className="font-bold text-lg">₹{product.price}</span>
+                                                    <button onClick={() => handleInput(product)}
+                                                        className="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
+                                                        <span>+</span>
+                                                        <span className="ml-4">Add</span>
+                                                    </button>
+                                                    {/* <ToastContainer /> */}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>)
-                                })
-                                }
-                            </div>
+                                        </div>)
+                                    })
+                                    }
+                                </div>
 
-                        </div>)
+                            </div>)
                     })}
                 </div>
             </section>

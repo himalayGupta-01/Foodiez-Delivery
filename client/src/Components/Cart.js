@@ -22,6 +22,7 @@ const Cart = () => {
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("")
     const [error, setError] = useState(null);
+    const [showOrderPlaced, setShoWOrderPlaced] = useState(false);
     const history = useHistory();
 
 
@@ -30,20 +31,25 @@ const Cart = () => {
 
     useEffect(() => {
         if (order.message === "Order Placed SuccessFully") {
-            history.push({
-                pathname: "/my-orders",
-                state: {
-                    from: "cart"
-                }
-            })
-            axios.post('/delete-cart').then(res => {
-                localStorage.removeItem("cart");
-                localStorage.setItem("cart", JSON.stringify({ items: {}, totalPrice: 0, totalQty: 0 }))
-                setCart({
-                    ...JSON.parse(localStorage.getItem("cart"))
+            setShoWOrderPlaced(true);
+            setTimeout(() => {
+                history.push({
+                    pathname: "/my-orders",
+                    state: {
+                        from: "cart"
+                    }
                 })
-                cartCounter.innerText = "";
-            })
+                axios.post('/delete-cart').then(res => {
+                    localStorage.removeItem("cart");
+                    localStorage.setItem("cart", JSON.stringify({ items: {}, totalPrice: 0, totalQty: 0 }))
+                    setCart({
+                        ...JSON.parse(localStorage.getItem("cart"))
+                    })
+                    cartCounter.innerText = "";
+                })
+            }, 3000)
+
+
         }
     }, [order, history, cartCounter]);
 
@@ -108,7 +114,6 @@ const Cart = () => {
         }
         await dispatch(takeOrder(order));
 
-
     }
 
     //displaying the cart
@@ -165,74 +170,83 @@ const Cart = () => {
     return (
         <>
             <section className="cart py-16">
-
-                {cart.items && cart.totalQty !== 0 ? <>
-                    <div className=" order container mx-auto w-1/2">
-                        <div className="flex items-center border-b border-gray-300 pb-4">
-                            <img src={CartIcon} alt="cart-icon" />
-                            <h1 className=" font-bold ml-4 text-2xl">Order Summary</h1>
-                        </div>
-                        <div className="order-list">
-                            {renderCart()}
-                        </div>
-                        <hr />
-                        <div className="text-right py-5">
-                            <div>
-                                <span className="text-lg font-bold">Total Amount:</span>
-                                <span className="amount text-2xl font-bold ml-2">₹{cart.totalPrice}</span>
-                            </div>
-
-                            {
-                                auth.authenticate ? <div>
-                                    <form className="mt-12" action="">
-                                        <input className="border border-gray-400 p-2 w-1/2 mb-2"
-                                            type="number"
-                                            placeholder="Phone Number"
-                                            value={phone}
-                                            onChange={(e) => setPhone(e.target.value)}
-                                        />
-                                        {error ? error.type === "Phone" ?
-                                            <div className="anyError">{error.value}</div>
-                                            : "" : ""
-                                        }
-                                        <br />
-                                        <input className="border border-gray-400 p-2 w-1/2 mb-2"
-                                            type="text"
-                                            placeholder="Address"
-                                            value={address}
-                                            onChange={(e) => setAddress(e.target.value)}
-                                        />
-                                        {error ? error.type === "Address" ?
-                                            <div className="anyError ">{error.value}</div>
-                                            : "" : ""
-                                        }
-                                    </form>
-
-                                    <button className="btn-primary px-6 py-2 rounded-full text-white font-bold mt-6" onClick={orderCart}>Order Now</button>
-                                </div> :
-                                    <>
-                                        <NavLink className=" cart-login inline-block cursor-pointer px-6 py-2 rounded-full btn-primary text-white font-bold mt-6" to="/signin">Login to Continue</NavLink>
-                                    </>
-                            }
-                        </div>
+                {showOrderPlaced ?
+                    <div style={{ width: "40%", margin: "auto", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                        </svg>
+                        <h1 class="successfullOrder">Order Placed Successfully</h1>
                     </div>
-                </>
-                    : <>
-                        {/* ------------------------------empty cart section -----------------------------------*/}
-                        <div className="empty-cart ">
-                            <div className="container mx-auto text-center">
-                                <h1 className=" text-3xl font-bold mb-2">Cart Empty 🙁</h1>
-                                <p className="text-gray-500 text-lg mb-12">You Probably haven't ordered a yet. <br />
-                                    To order a Dish, go to the main page</p>
-                                <img className=" w-1/3 mx-auto" src={EmptyCart} alt="empty cart" />
-                                <NavLink className=" cart-home inline-block px-6 py-2 rounded-full btn-primary text-white font-bold mt-12" to="/">Go back</NavLink>
-                            </div>
-                        </div>
+                    :
+                    <>
+                        {cart.items && cart.totalQty !== 0 ? <>
+                                <div className=" order container mx-auto w-1/2">
+                                    <div className="flex items-center border-b border-gray-300 pb-4">
+                                        <img src={CartIcon} alt="cart-icon" />
+                                        <h1 className=" font-bold ml-4 text-2xl">Order Summary</h1>
+                                    </div>
+                                    <div className="order-list">
+                                        {renderCart()}
+                                    </div>
+                                    <hr />
+                                    <div className="text-right py-5">
+                                        <div>
+                                            <span className="text-lg font-bold">Total Amount:</span>
+                                            <span className="amount text-2xl font-bold ml-2">₹{cart.totalPrice}</span>
+                                        </div>
+
+                                        {
+                                            auth.authenticate ? <div>
+                                                <form className="mt-12" action="">
+                                                    <input className="border border-gray-400 p-2 w-1/2 mb-2"
+                                                        type="number"
+                                                        placeholder="Phone Number"
+                                                        value={phone}
+                                                        onChange={(e) => setPhone(e.target.value)}
+                                                    />
+
+                                                    {error ? error.type === "Phone" ?
+                                                        <div className="anyError">{error.value}</div>
+                                                        : "" : ""
+                                                    }
+                                                    <br />
+                                                    <input className="border border-gray-400 p-2 w-1/2 mb-2"
+                                                        type="text"
+                                                        placeholder="Address"
+                                                        value={address}
+                                                        onChange={(e) => setAddress(e.target.value)}
+                                                    />
+                                                    {error ? error.type === "Address" ?
+                                                        <div className="anyError ">{error.value}</div>
+                                                        : "" : ""
+                                                    }
+                                                </form>
+
+                                                <button className="btn-primary px-6 py-2 rounded-full text-white font-bold mt-6" onClick={orderCart}>Order Now</button>
+                                            </div> :
+                                                <>
+                                                    <NavLink className=" cart-login inline-block cursor-pointer px-6 py-2 rounded-full btn-primary text-white font-bold mt-6" to="/signin">Login to Continue</NavLink>
+                                                </>
+                                        }
+                                    </div>
+                                </div>
+                            </>
+                                : <>
+                                    {/* ------------------------------empty cart section -----------------------------------*/}
+                                    <div className="empty-cart ">
+                                        <div className="container mx-auto text-center">
+                                            <h1 className=" text-3xl font-bold mb-2">Cart Empty 🙁</h1>
+                                            <p className="text-gray-500 text-lg mb-12">You Probably haven't ordered a yet. <br />
+                                                To order a Dish, go to the main page</p>
+                                            <img className=" w-1/3 mx-auto" src={EmptyCart} alt="empty cart" />
+                                            <NavLink className=" cart-home inline-block px-6 py-2 rounded-full btn-primary text-white font-bold mt-12" to="/">Go back</NavLink>
+                                        </div>
+                                    </div>
+                                </>
+                        }
                     </>
                 }
-
-
-
 
             </section>
         </>

@@ -121,9 +121,7 @@ app.use(express.static(path.join(__dirname, "uploads")));
 //setting port
 PORT = process.env.PORT || 8000;
 
-
-
 // listening req at the PORT
 server.listen(PORT, () => {
-    console.log(`listening at port ${PORT}`);
+    console.log(`Listening at port ${PORT}`);
 })

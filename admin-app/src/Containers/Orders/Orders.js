@@ -49,7 +49,7 @@ const Orders = () => {
                             order.orders.map((order, index) =>
                                 <tr key={order._id}>
                                     {/* <td>{index + 1}</td> */}
-                                    <td>{`${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[1]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[0]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[2]}`}</td>
+                                    <td>{`${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[1]}/${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[0]}/${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[2]}`}</td>
                                     <td>{new Date((order.createdAt).toString()).toLocaleTimeString()}</td>
                                     <td>{order.phone}</td>
                                     <td>{order.address}</td>
