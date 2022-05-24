@@ -23,7 +23,7 @@ const Orders = () => {
 
     useEffect(() => {
         dispatch(getInitialData())
-    })
+    },[dispatch])
 
 
     //to show the orders

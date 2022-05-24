@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getInitialData } from "../../actions/Action"
 import { Bar } from "react-chartjs-2";
 import 'chart.js/auto';
+import { FaSyncAlt } from 'react-icons/fa';
 
 
 const Home = (props) => {
@@ -16,7 +17,7 @@ const Home = (props) => {
 
     useEffect(() => {
         dispatch(getInitialData())
-    }, [category, product, order,dispatch])
+    }, [dispatch])
 
     const getChart = () => {
 
@@ -69,7 +70,10 @@ const Home = (props) => {
 
     return (
         <Layout sidebar>
-            <div className="container mt-4 d-flex flex-column" style={{ minHeight: "80vh" }}>
+            <div className="d-flex justify-content-end my-2">
+                <button className="syncBtn" onClick={() => { dispatch(getInitialData()) }} ><FaSyncAlt /></button>
+            </div>
+            <div className="container mt-1 d-flex flex-column" style={{ minHeight: "80vh" }}>
                 <div className="d-flex justify-content-between align-items-center">
                     <div className="card text-center">
                         <div className="card-header">
@@ -118,7 +122,7 @@ const Home = (props) => {
                     </div>
                 </div>
 
-                <div style={{ width: "50%", height: "60%" }} className="mt-5 d-flex justify-content-center align-self-center align-items-center">
+                <div style={{ width: "50%", height: "60%" }} className="mt-3 d-flex justify-content-center align-self-center align-items-center">
                     {getChart()}
 
                 </div>
