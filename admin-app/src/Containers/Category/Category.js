@@ -178,7 +178,7 @@ const Category = (props) => {
             <Container>
                 <Row>
                     <Col md={12}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <div className='d-flex justify-content-between mt-4'>
                             <h3>Category</h3>
                             <Button variant="success" onClick={handleShow}>Add +</Button>
                         </div>

@@ -23,7 +23,7 @@ const Orders = () => {
 
     useEffect(() => {
         dispatch(getInitialData())
-    },[dispatch])
+    }, [dispatch])
 
 
     //to show the orders
@@ -46,29 +46,26 @@ const Orders = () => {
                 <tbody style={{ textAlign: "center" }}>
                     {
                         order.orders.length > 0 ?
-                            order.orders.map((order, index) =>
-                                <tr key={order._id}>
-                                    {/* <td>{index + 1}</td> */}
-                                    <td>{`${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[1]}/${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[0]}/${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[2]}`}</td>
-                                    <td>{new Date((order.createdAt).toString()).toLocaleTimeString()}</td>
-                                    <td>{order.phone}</td>
-                                    <td>{order.address}</td>
-                                    <td>{order.paymentType}</td>
-                                    <td>{order.status}</td>
+                            order.orders.map((order, index) => <tr key={order._id}>
+                                {/* <td>{index + 1}</td> */}
+                                <td>{`${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[1]}/${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[0]}/${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[2]}`}</td>
+                                <td>{new Date((order.createdAt).toString()).toLocaleTimeString()}</td>
+                                <td>{order.phone}</td>
+                                <td>{order.address}</td>
+                                <td>{order.paymentType}</td>
+                                <td>{order.status}</td>
 
-                                    <td style={{
-                                        display: "flex",
-                                        justifyContent: "space-around"
-                                    }}>
-                                        <Button variant="outline-success" onClick={(e) => {
-                                            e.preventDefault();
-                                            setIdToToOperate(order._id)
-                                            handleShowUpdateOrderModal(order);
-                                        }}>View Order and Update Status</Button>
-                                    </td>
-                                </tr>
-
-
+                                <td style={{
+                                    display: "flex",
+                                    justifyContent: "space-around"
+                                }}>
+                                    <Button variant="outline-success" onClick={(e) => {
+                                        e.preventDefault();
+                                        setIdToToOperate(order._id)
+                                        handleShowUpdateOrderModal(order);
+                                    }}>View Order and Update Status</Button>
+                                </td>
+                            </tr>
                             )
                             :
                             null
@@ -114,6 +111,11 @@ const Orders = () => {
                     <h2 className=" font-bold ml-4 text-2xl">Order Summary</h2>
                 </div>
 
+                <div className="d-flex items-center border-b border-gray-300 pb-4">
+                    <h5 className="ml-4 text-2xl">Customer Name : <span className="text-success"> {currentOrder.user.name}</span></h5>
+
+                </div>
+
                 <Table style={{ fontSize: "16px", width: "100%" }} responsive="sm">
                     <thead style={{ textAlign: "center" }}>
                         <tr>
@@ -123,28 +125,25 @@ const Orders = () => {
                     </thead>
                     <tbody style={{ textAlign: "center" }}>
                         {
-                            totalCart.map((val) =>
-                                <tr key={order._id}>
-                                    <td> <h4>{val.item.name}</h4></td>
-                                    <td><h5>{val.quantity}</h5></td>
-                                    <br />
-                                </tr>
-
+                            totalCart.map((val) => <tr key={order._id}>
+                                <td><h4>{val.item.name}</h4></td>
+                                <td><h5>{val.quantity}</h5></td>
+                            </tr>
                             )
                         }
 
                     </tbody>
                 </Table>
 
-                <div style={{ justifyContent: "space-between", alignItems: "center" }} className="d-flex text-right py-5">
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "start" }}>
-                        <h2 className="text-lg font-bold">Total Amount:</h2>
-                        <h4 className="amount text-2xl font-bold ml-2">₹{currentOrder.items.totalPrice}</h4>
+                <div className="d-flex text-right justify-content-between align-items-center py-4">
+                    <div className="d-flex align-items-center justify-content-center" >
+                        <h3 className="font-bold">Total Amount:</h3>
+                        <h5 className="amount text-2xl font-bold ml-2">₹{currentOrder.items.totalPrice}</h5>
                     </div>
-                    <div>
+                    <div className="d-flex flex-column align-items-center justify-content-center">
                         <h5>Update Status</h5>
                         <select
-                            disabled={orderStatus === "Delivered" || orderStatus === "Order Cancelled"  ? true : false}
+                            disabled={orderStatus === "Delivered" || orderStatus === "Order Cancelled" ? true : false}
                             className="form-control form-select"
                             value={tempStatus}
                             onChange={(e) => {

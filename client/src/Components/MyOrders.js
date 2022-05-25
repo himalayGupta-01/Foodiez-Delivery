@@ -210,46 +210,38 @@ const MyOrders = (props) => {
                                     <tbody style={{ textAlign: "center" }}>
                                         {
                                             order.orders.length > 0 ?
-                                                order.orders.map((order, index) => {
-                                                    return <>
-                                                        <tr
-                                                            key={order._id}
-                                                            style={{
-                                                                // marginBottom: "20px",
-                                                                backgroundColor: order.status === "Order Cancelled" ? "#e8090999" : order.status === "Delivered" ? "#69db7d" : "inherit",
-                                                                // textDecoration: order.status === "Order Cancelled" ? "line-through" : "none",
-                                                                // textDecorationThickness: order.status === "Order Cancelled" ? "10%" : "auto",
-                                                            }}
-                                                        >
-                                                            <td>{`${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[1]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[0]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[2]}`}</td>
-                                                            <td>{new Date((order.createdAt).toString()).toLocaleTimeString()}</td>
+                                                order.orders.map((order, index) => <tr
+                                                    key={order._id}
+                                                    style={{
+                                                        // marginBottom: "20px",
+                                                        backgroundColor: order.status === "Order Cancelled" ? "#e8090999" : order.status === "Delivered" ? "#69db7d" : "inherit",
+                                                        // textDecoration: order.status === "Order Cancelled" ? "line-through" : "none",
+                                                        // textDecorationThickness: order.status === "Order Cancelled" ? "10%" : "auto",
+                                                    }}
+                                                >
+                                                    <td>{`${new Date((order.createdAt).toString()).toLocaleDateString().split("/")[1]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[0]}/${new Date("2022-05-02T00:57:04.231Z").toLocaleDateString().split("/")[2]}`}</td>
+                                                    <td>{new Date((order.createdAt).toString()).toLocaleTimeString()}</td>
 
-                                                            <td>{order.phone}</td>
-                                                            <td>{order.address}</td>
-                                                            <td>{order.paymentType}</td>
-                                                            {getStatus(order.status)}
-                                                            <td>{new Date((order.updatedAt).toString()).toLocaleTimeString()}</td>
+                                                    <td>{order.phone}</td>
+                                                    <td>{order.address}</td>
+                                                    <td>{order.paymentType}</td>
+                                                    {getStatus(order.status)}
+                                                    <td>{new Date((order.updatedAt).toString()).toLocaleTimeString()}</td>
 
 
-                                                            <td style={{
-                                                                display: "flex",
-                                                                justifyContent: "space-around",
-                                                            }}>
-                                                                <Button variant="outline-primary" onClick={() => {
-                                                                    handleShowOrderDetails(order)
-                                                                }}>Details</Button>
-                                                            </td>
-                                                        </tr>
-                                                        {/* <br /> */}
-                                                    </>
-                                                }
-
+                                                    <td style={{
+                                                        display: "flex",
+                                                        justifyContent: "space-around",
+                                                    }}>
+                                                        <Button variant="outline-primary" onClick={() => {
+                                                            handleShowOrderDetails(order)
+                                                        }}>Details</Button>
+                                                    </td>
+                                                </tr>
                                                 )
                                                 :
                                                 null
                                         }
-
-
                                     </tbody>
                                 </Table>
 
