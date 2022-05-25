@@ -13,6 +13,7 @@ const Home = (props) => {
     const category = useSelector(state => state.category);
     const product = useSelector(state => state.product);
     const order = useSelector(state => state.order);
+    const query = useSelector(state => state.message)
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -118,6 +119,21 @@ const Home = (props) => {
                         {order.orders.length !== 0 ?
                             <div className="card-footer text-muted">
                                 Last Recieved on {new Date((order.orders[order.orders.length - 1].createdAt).toString()).toLocaleDateString().split("/")[1]}/{new Date((order.orders[order.orders.length - 1].createdAt).toString()).toLocaleDateString().split("/")[0]}/{new Date((order.orders[order.orders.length - 1].createdAt).toString()).toLocaleDateString().split("/")[2]}
+                            </div> : ""}
+                    </div>
+
+                    <div className="card text-center">
+                        <div className="card-header">
+                            Queries
+                        </div>
+                        <div className="card-body">
+                            <h5 className="card-title">Total Queries</h5>
+                            <p className="card-text">{query.queries.length}</p>
+                            <NavLink to="/queries" className="btn btn-info">View All Queries</NavLink>
+                        </div>
+                        {query.queries.length !== 0 ?
+                            <div className="card-footer text-muted">
+                                Last Recieved on {new Date((query.queries[query.queries.length - 1].createdAt).toString()).toLocaleDateString().split("/")[1]}/{new Date((query.queries[query.queries.length - 1].createdAt).toString()).toLocaleDateString().split("/")[0]}/{new Date((query.queries[query.queries.length - 1].createdAt).toString()).toLocaleDateString().split("/")[2]}
                             </div> : ""}
                     </div>
                 </div>

@@ -106,8 +106,8 @@ app.use(require('./routes/auth'));
 app.use(require('./routes/admin/auth'));
 app.use(require('./routes/category'));
 app.use(require('./routes/product'));
+app.use(require('./routes/message'))
 app.use(require('./routes/order'), (req, res, next) => {
-    //*********************** */
     req.io = io;
     next();
 });

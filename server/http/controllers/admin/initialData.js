@@ -1,12 +1,14 @@
 const Category = require("../../../models/category");
 const Product = require("../../../models/product");
-const Order = require("../../../models/order")
-const User =require("../../../models/userSchema")
+const Order = require("../../../models/order");
+const Message =require("../../../models/message")
 
 
 exports.initialData = async (req, res) => {
 
     const categories = await Category.find({});
+
+    const queries =await Message.find({});
 
     // const orders=await Order.find({},null,{sort:{"createdAt":-1}});
     const orders = await Order.find({})
@@ -22,7 +24,8 @@ exports.initialData = async (req, res) => {
     res.status(200).json({
         categories,
         products,
-        orders
+        orders,
+        queries
     })
 
 

@@ -55,6 +55,14 @@ exports.validateUpdateProductRequest = [
     check('category').notEmpty().withMessage('Category**Category is required'),
 ];
 
+exports.validateAddMessageRequest = [
+    check('name').notEmpty().withMessage('Name**Name is required'),
+    check('name').isLength({ min: 4 }).withMessage('Name**Name must be atleast 4 character long'),
+    check('email').notEmpty().withMessage('Email**Email is required'),
+    check('email').isEmail().withMessage('Email**Valid Email is required'),
+    check('message').notEmpty().withMessage('Message**Message is required'),
+];
+
 
 exports.isRequestValidated = (req, res, next) => {
     const errors = validationResult(req);

@@ -11,6 +11,7 @@ import { getInitialData } from './actions/Action'
 import Products from './Containers/Products/Products';
 import Orders from './Containers/Orders/Orders';
 import Category from './Containers/Category/Category';
+import Query from "./Containers/Query/Query"
 
 function App(props) {
 
@@ -31,6 +32,7 @@ function App(props) {
         <PrivateRoute path='/category' component={Category} />
         <PrivateRoute path='/products' component={Products} />
         <PrivateRoute path='/orders' component={Orders} />
+        <PrivateRoute path='/queries' component={Query} />
         <Route path='/signin' component={Signin} />
         <Route path='/signup' component={Signup} />
       </Switch>

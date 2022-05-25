@@ -3,7 +3,8 @@ import { combineReducers } from "redux";
 import ProductReducer from "./Product.reducer"
 import AuthReducer from "./Auth.reducer";
 import UserReducer from "./User.reducer";
-import OrderReducer from "./Order.reducer"
+import OrderReducer from "./Order.reducer";
+import MessageReducer from "./Message.reducer"
 
 
 
@@ -12,7 +13,8 @@ const rootReducer=combineReducers({
     user:UserReducer,
     category:CategoryReducer,
     product:ProductReducer,
-    order:OrderReducer
+    order:OrderReducer,
+    message:MessageReducer
 })
 
 
