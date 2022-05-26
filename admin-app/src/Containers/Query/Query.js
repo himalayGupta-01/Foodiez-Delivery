@@ -47,7 +47,7 @@ const Query = () => {
                                     display: "flex",
                                     justifyContent: "space-around"
                                 }}>
-                                    <a href={`mailto:${query.email}`}><Button variant="outline-info">Click Here</Button></a>
+                                    <a href={`mailto:${query.email}?subject=Regarding ${query.message}&body=Dear ${query.name}`}><Button variant="outline-info">Click Here</Button></a>
                                 </td>
                             </tr>
                             )

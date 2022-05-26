@@ -15,7 +15,6 @@ const Contact = () => {
     const [error, setError] = useState(null);
     const disptach = useDispatch()
 
-
     useEffect(() => {
         if (auth.authenticate) {
             setName(auth.user.name);
@@ -71,10 +70,10 @@ const Contact = () => {
                                         <b>Mail</b>
                                     </div>
                                     <div className="contact_info_text">
-                                        <a style={{ color: "#fe5f1e" }} href="mailto:akashagrawalecs@gmail.com">akashagrawalecs@gmail.com</a>
+                                        <a className='text-green-600' href="mailto:akashagrawalecs@gmail.com">akashagrawalecs@gmail.com</a>
                                     </div>
                                     <div className="contact_info_text">
-                                        <a style={{ color: "#fe5f1e" }} href="mailto:himalay9644@gmail.com">himalay9644@gmail.com</a>
+                                        <a className='text-green-600' href="mailto:himalay9644@gmail.com">himalay9644@gmail.com</a>
                                     </div>
                                 </div>
                             </div>
@@ -85,7 +84,7 @@ const Contact = () => {
                                         <b>Address</b>
                                     </div>
                                     <div className="contact_info_text">
-                                        Gwalior, MP, India
+                                        <a href="https://www.google.com/maps/place/Gubbara+Phatak,+Dal+Bazaar,+Lashkar,+Gwalior,+Madhya+Pradesh+474009/@26.2000773,78.1567857,20.92z/data=!4m5!3m4!1s0x3976c42d4576848f:0x6eade78c7c3573be!8m2!3d26.2001253!4d78.1569395"> Gwalior, MP, India</a>
                                     </div>
                                 </div>
                             </div>
@@ -96,10 +95,10 @@ const Contact = () => {
                                         <b>Phone</b>
                                     </div>
                                     <div className="contact_info_text">
-                                        <a style={{ color: "#fe5f1e" }} href="tel:+91 8817 836 377">+91 8817 836 377</a>
+                                        <a className='text-blue-600' href="tel:+91 8817 836 377">+91 8817 836 377</a>
                                     </div>
                                     <div className="contact_info_text">
-                                        <a style={{ color: "#fe5f1e" }} href="tel:+91 9644 622 667">+91 9644 622 667</a>
+                                        <a className='text-blue-600' href="tel:+91 9644 622 667">+91 9644 622 667</a>
                                     </div>
                                 </div>
                             </div>
@@ -117,9 +116,9 @@ const Contact = () => {
                             <div className="mb-6">
                                 <label className=" text-gray-700 text-sm font-bold mb-2 flex" htmlFor="text"> <FaUserAlt /> <span className=" px-3">Name</span>
                                 </label>
-                                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" value={name} 
-                                // onChange={(e) => setName(e.target.value)} 
-                                placeholder="Enter your Name" />
+                                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" value={name}
+                                    // onChange={(e) => setName(e.target.value)} 
+                                    placeholder="Enter your Name" />
                                 {error ? error.type === "Name" ?
                                     <div className="anyError mb-6">{error.value}</div>
                                     : "" : ""
@@ -130,13 +129,16 @@ const Contact = () => {
                                 <label className=" text-gray-700 text-sm font-bold mb-2 flex" htmlFor="email">
                                     <FaEnvelope /><span className=" px-3">Email</span>
                                 </label>
-                                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={email} 
-                                // onChange={(e) => setEmail(e.target.value)} 
-                                placeholder="Enter your email" />
+                                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={email}
+                                    // onChange={(e) => setEmail(e.target.value)} 
+                                    placeholder="Enter your email" />
                                 {error ? error.type === "Email" ?
                                     <div className="anyError mb-6">{error.value}</div>
-                                    : "" : ""
+                                    : "" : <div className="mt-2">
+                                    <span className="text-red-700 text-sm font-bold mb-2 flex">You will recieve your reply on this mail-id</span>
+                                </div>
                                 }
+
                             </div>
 
                             <div className="mt-8">
@@ -165,6 +167,8 @@ const Contact = () => {
                                 </>
                                     : <NavLink className=" cart-login inline-block cursor-pointer px-6 py-2 rounded-full btn-primary text-white font-bold mt-6" to="/signin">Login to Continue</NavLink>}
                             </div>
+
+
                         </form>
                     </div>
                 </div>
